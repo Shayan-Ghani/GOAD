@@ -8,13 +8,29 @@ import (
 	"strings"
 )
 
-
 type SQLTodoController struct {
 	db *sql.DB
 }
 
 func NewSQLTodoController(db *sql.DB) *SQLTodoController {
 	return &SQLTodoController{db: db}
+}
+
+func scanItem(rows *sql.Rows, item *model.Item, row ...*sql.Row) error {
+	fields := []interface{}{
+		&item.ID,
+		&item.Name,
+		&item.Description,
+		&item.CreatedAt,
+		&item.ModifiedAt,
+		&item.DeletedAt,
+		&item.Tags,
+	}
+
+	if row != nil {
+		return row[0].Scan(fields...)
+	}
+	return rows.Scan(fields...)
 }
 
 func (c *SQLTodoController) AddItem(item *model.Item) error {
@@ -38,15 +54,7 @@ func (c *SQLTodoController) ViewItem(item *model.Item) (*model.Item, error) {
 	}
 	defer stmt.Close()
 
-	if err := stmt.QueryRow(item.ID).Scan(
-		&item.ID,
-		&item.Name,
-		&item.Description,
-		&item.CreatedAt,
-		&item.ModifiedAt,
-		&item.DeletedAt,
-		&item.Tags,
-	); err != nil {
+	if err := scanItem(nil,item, stmt.QueryRow(item.ID)); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("item not found")
 		}
@@ -77,15 +85,7 @@ func (c *SQLTodoController) ViewItems(item *model.Item, query ...string) ([]mode
 	var ItemRows []model.Item
 
 	if rows.Next() {
-		if err = rows.Scan(
-			&item.ID,
-			&item.Name,
-			&item.Description,
-			&item.CreatedAt,
-			&item.ModifiedAt,
-			&item.DeletedAt,
-			&item.Tags,
-		); err != nil {
+		if err = scanItem(rows, item); err != nil {
 			return nil, fmt.Errorf("failed to scan row: %v", err)
 		}
 		ItemRows = append(ItemRows, *item)
@@ -98,8 +98,8 @@ func (c *SQLTodoController) ViewItemsDone(item *model.Item) ([]model.Item, error
 	return c.ViewItems(item, "SELECT * FROM items_done")
 }
 
-// func (c *SQLTodoController) ViewItemByTag(tag string) string {
-// 	return c.GetItemByTag(tag)
+// func (c *SQLTodoController) ViewItemsByTag(tag *model.Tag) ([]model.Item, error) {
+// 	return nil, nil
 // }
 
 // func (c *SQLTodoController) GetItemByTag(tag string) (error , string) {
