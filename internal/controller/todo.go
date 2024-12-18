@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	now "gocasts/ToDoApp/internal/pkg/time"
+	"strings"
 )
 
 type SQLTodoController struct {
@@ -33,7 +34,7 @@ func (c *SQLTodoController) AddItem(name string, desc string, tags ...string) er
 	return nil
 }
 
-func (c *SQLTodoController) ViewItem(id string) (string, error) {
+func (c *SQLTodoController) ViewItem(id uint) (string, error) {
 	stmt , err := c.db.Prepare("SELECT * FROM items WHERE id = ?")
 	if err != nil {
 		return "", fmt.Errorf("failed to prepare statement: %v", err)
@@ -52,7 +53,7 @@ func (c *SQLTodoController) ViewItem(id string) (string, error) {
 	return item , nil
 }
 
-func (c *SQLTodoController) ViewItems(id string) (string, error) {
+func (c *SQLTodoController) ViewItems(id uint) (string, error) {
     stmt, err := c.db.Prepare("SELECT * FROM items")
     if err != nil {
         return "", fmt.Errorf("failed to prepare statement: %v", err)
@@ -139,6 +140,39 @@ func (c *SQLTodoController) DeleteTag(tag string) error {
 	}
 	return nil
 }
+
+func (c *SQLTodoController) UpdateItem(id uint, updates map[string]interface{}) error {
+	// Build query dynamically
+	var setFields []string
+	var args []interface{}
+	
+	for field, value := range updates {
+		setFields = append(setFields, field + " = ?")
+		args = append(args, value)
+	}
+	
+	// Add ID to args
+	args = append(args, id)
+	
+	query := fmt.Sprintf("UPDATE items SET %s WHERE id = ?", strings.Join(setFields, ", "))
+	
+	stmt, err := c.db.Prepare(query)
+	if err != nil {
+		return fmt.Errorf("could not prepare update statement: %v", err)
+	}
+	defer stmt.Close()
+	
+	_, err = stmt.Exec(args...)
+	return err
+}
+
+// func (c *SQLTodoController) UpdateItemName(id uint, name string) error {
+
+
+	
+
+// 	return nil
+// }
 
 /// Getter and setters
 
