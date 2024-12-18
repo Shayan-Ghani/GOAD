@@ -3,9 +3,11 @@ package controller
 import (
 	"database/sql"
 	"fmt"
+	"gocasts/ToDoApp/internal/model"
 	now "gocasts/ToDoApp/internal/pkg/time"
 	"strings"
 )
+
 
 type SQLTodoController struct {
 	db *sql.DB
@@ -15,88 +17,85 @@ func NewSQLTodoController(db *sql.DB) *SQLTodoController {
 	return &SQLTodoController{db: db}
 }
 
-func (c *SQLTodoController) AddItem(name string, desc string, tags ...string) error {
-	// var itemTags []model.Tag
-	// for _, tagName := range tags{
-	// 	model.Tag.Name=
-	// }
-
+func (c *SQLTodoController) AddItem(item *model.Item) error {
 	stmtIn, err := c.db.Prepare("INSERT INTO items (name, description, created_at ) VALUES (?,?,?)")
 	if err != nil {
 		return fmt.Errorf("failed to prepare insert statement: %v", err)
 	}
 	defer stmtIn.Close()
 
-	if _, err = stmtIn.Exec(name, desc, now.Now()); err != nil {
+	if _, err = stmtIn.Exec(item.Name, item.Description, now.Now()); err != nil {
 		return fmt.Errorf("failed to insert item: %v", err)
 	}
 
 	return nil
 }
 
-func (c *SQLTodoController) ViewItem(id uint) (string, error) {
-	stmt , err := c.db.Prepare("SELECT * FROM items WHERE id = ?")
+func (c *SQLTodoController) ViewItem(item *model.Item) (*model.Item, error) {
+	stmt, err := c.db.Prepare("SELECT * FROM items WHERE id = ?")
 	if err != nil {
-		return "", fmt.Errorf("failed to prepare statement: %v", err)
+		return nil, fmt.Errorf("failed to prepare statement: %v", err)
 	}
 	defer stmt.Close()
 
-    var item string
-	
-	if err := stmt.QueryRow(id).Scan(&item); err != nil {
+	if err := stmt.QueryRow(item.ID).Scan(
+		&item.ID,
+		&item.Name,
+		&item.Description,
+		&item.CreatedAt,
+		&item.ModifiedAt,
+		&item.DeletedAt,
+		&item.Tags,
+	); err != nil {
 		if err == sql.ErrNoRows {
-            return "", fmt.Errorf("item not found")
-        }
-		return "", fmt.Errorf("failed to scan row: %v", err)
+			return nil, fmt.Errorf("item not found")
+		}
+		return nil, fmt.Errorf("failed to scan row: %v", err)
 	}
-	
-	return item , nil
+
+	return item, err
 }
 
-func (c *SQLTodoController) ViewItems(id uint) (string, error) {
-    stmt, err := c.db.Prepare("SELECT * FROM items")
-    if err != nil {
-        return "", fmt.Errorf("failed to prepare statement: %v", err)
-    }
-    defer stmt.Close() 
+// TODO: chekOut for Security of variadic query parameter.
+func (c *SQLTodoController) ViewItems(item *model.Item, query ...string) ([]model.Item, error) {
+	q := "SELECT * FROM items"
+	if query != nil {
+		q = query[0]
+	}
+	stmt, err := c.db.Prepare(q)
+	if err != nil {
+		return nil, fmt.Errorf("failed to prepare statement: %v", err)
+	}
+	defer stmt.Close()
 
-    rows, err := stmt.Query() 
-    if err != nil {
-        return "", fmt.Errorf("failed to execute query: %v", err)
-    }
-    defer rows.Close()
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute query: %v", err)
+	}
+	defer rows.Close()
 
-    var item string
-    if rows.Next() { 
-        if err = rows.Scan(&item); err != nil {
-            return "", fmt.Errorf("failed to scan row: %v", err)
-        }
-    }
+	var ItemRows []model.Item
 
-    return item, nil
+	if rows.Next() {
+		if err = rows.Scan(
+			&item.ID,
+			&item.Name,
+			&item.Description,
+			&item.CreatedAt,
+			&item.ModifiedAt,
+			&item.DeletedAt,
+			&item.Tags,
+		); err != nil {
+			return nil, fmt.Errorf("failed to scan row: %v", err)
+		}
+		ItemRows = append(ItemRows, *item)
+	}
+
+	return ItemRows, nil
 }
 
-func (c *SQLTodoController) ViewItemsDone(id string) (string, error) {
-	stmt, err := c.db.Prepare("SELECT * FROM items_done")
-    if err != nil {
-        return "", fmt.Errorf("failed to prepare statement: %v", err)
-    }
-    defer stmt.Close() 
-
-    rows, err := stmt.Query() 
-    if err != nil {
-        return "", fmt.Errorf("failed to execute query: %v", err)
-    }
-    defer rows.Close()
-
-    var item string
-    if rows.Next() { 
-        if err = rows.Scan(&item); err != nil {
-            return "", fmt.Errorf("failed to scan row: %v", err)
-        }
-    }
-
-    return item, nil
+func (c *SQLTodoController) ViewItemsDone(item *model.Item) ([]model.Item, error) {
+	return c.ViewItems(item, "SELECT * FROM items_done")
 }
 
 // func (c *SQLTodoController) ViewItemByTag(tag string) string {
@@ -113,7 +112,7 @@ func (c *SQLTodoController) ViewItemsDone(id string) (string, error) {
 // 	// err, item = sql.Conn("Select * from items where tag_id == ?")
 // }
 
-func (c *SQLTodoController) DeleteItem(id string) error {
+func (c *SQLTodoController) DeleteItem(item *model.Item) error {
 	stmtDel, err := c.db.Prepare("DELETE FROM items WHERE id = ?")
 	if err != nil {
 		return fmt.Errorf("could not prepare delete item statement: %v", err)
@@ -121,55 +120,51 @@ func (c *SQLTodoController) DeleteItem(id string) error {
 
 	defer stmtDel.Close()
 
-	if _, err := stmtDel.Exec(id); err != nil {
+	if _, err := stmtDel.Exec(item.ID); err != nil {
 		return fmt.Errorf("could not query delete item statement: %v", err)
-
 	}
 	return nil
 }
 
-func (c *SQLTodoController) DeleteTag(tag string) error {
+func (c *SQLTodoController) DeleteTag(tag *model.Tag) error {
 	stmtDel, err := c.db.Prepare("DELETE from tags where name = ?")
 	if err == nil {
 		return fmt.Errorf("could not prepare delete tag statement: %v", err)
 	}
 	defer stmtDel.Close()
 
-	if _ , err := stmtDel.Exec(tag); err != nil {
+	if _, err := stmtDel.Exec(tag.ID); err != nil {
 		return fmt.Errorf("could not query delete tag statement: %v", err)
 	}
 	return nil
 }
 
-func (c *SQLTodoController) UpdateItem(id uint, updates map[string]interface{}) error {
+func (c *SQLTodoController) UpdateItem(item *model.Item, updates map[string]interface{}) error {
 	// Build query dynamically
 	var setFields []string
 	var args []interface{}
-	
+
 	for field, value := range updates {
-		setFields = append(setFields, field + " = ?")
+		setFields = append(setFields, field+" = ?")
 		args = append(args, value)
 	}
-	
+
 	// Add ID to args
-	args = append(args, id)
-	
+	args = append(args, item.ID)
+
 	query := fmt.Sprintf("UPDATE items SET %s WHERE id = ?", strings.Join(setFields, ", "))
-	
+
 	stmt, err := c.db.Prepare(query)
 	if err != nil {
 		return fmt.Errorf("could not prepare update statement: %v", err)
 	}
 	defer stmt.Close()
-	
+
 	_, err = stmt.Exec(args...)
 	return err
 }
 
 // func (c *SQLTodoController) UpdateItemName(id uint, name string) error {
-
-
-	
 
 // 	return nil
 // }
