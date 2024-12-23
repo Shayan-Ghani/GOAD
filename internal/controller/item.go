@@ -228,6 +228,18 @@ func (c *SQLTodoController) UpdateItem(item *model.Item, updates map[string]inte
 	return err
 }
 
+func (c *SQLTodoController) UpdateItemDone(id string) error {
+	q := "UPDATE items SET is_done = 1 WHERE id = ?"
+	stmt,err := c.db.Prepare(q)
+	if err != nil {
+		return fmt.Errorf("couldn't prepare update item is_done : %v", err)
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(id)
+	return err
+}
+
 // func (c *SQLTodoController) UpdateItemName(id string, name string) error {
 
 // 	return nil
