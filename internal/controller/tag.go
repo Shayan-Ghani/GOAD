@@ -7,17 +7,28 @@ import (
 	"strings"
 )
 
-func (c *SQLTodoController) AddTag(tags []string) error {
-
-	params := make([]interface{}, 0, len(tags)*2)
-	placeHolders := make([]string, len(tags))
+func packTagParamsAndPlacholders(tags []string, itemTag bool, tagCount int) ([]interface{}, string, []string ) {
+	params := make([]interface{}, 0, tagCount*2)
+	placeHolders := make([]string, tagCount)
 
 	for i, tag := range tags {
-		placeHolders[i] = "(?,?)"
-		params = append(params, tag, now.Now())
+		if !itemTag{
+			placeHolders[i] = "(?,?)"
+			params = append(params, tag, now.Now())
+		}else {
+			placeHolders[i] = "?"
+			params = append(params, tag)
+		}
 	}
 
-	q := fmt.Sprintf("INSERT IGNORE INTO tags (name, created_at) VALUES %s", strings.Join(placeHolders, ","))
+	return params, strings.Join(placeHolders, ","), placeHolders 
+}
+
+func (c *SQLTodoController) AddTag(tags []string) error {
+
+	params, placeHolders, _:= packTagParamsAndPlacholders(tags, false ,len(tags))
+
+	q := fmt.Sprintf("INSERT IGNORE INTO tags (name, created_at) VALUES %s", placeHolders)
 
 	stmtIns, err := c.db.Prepare(q)
 	if err != nil {
