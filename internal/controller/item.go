@@ -132,7 +132,7 @@ func (c *SQLTodoController) ViewItem(item *model.Item) (*model.Item, error) {
 }
 
 // TODO: chekOut for Security of variadic query parameter.
-func (c *SQLTodoController) ViewItems(item *model.Item, query ...string) ([]model.Item, error) {
+func (c *SQLTodoController) ViewItems(query ...string) ([]model.Item, error) {
 	q := "SELECT * FROM items"
 	if query != nil {
 		q = query[0]
@@ -151,18 +151,23 @@ func (c *SQLTodoController) ViewItems(item *model.Item, query ...string) ([]mode
 
 	var ItemRows []model.Item
 
-	if rows.Next() {
-		if err = scanItem(rows, item); err != nil {
+	for rows.Next() {
+		var item model.Item
+		if err = scanItem(rows, &item); err != nil {
 			return nil, fmt.Errorf("failed to scan row: %v", err)
 		}
-		ItemRows = append(ItemRows, *item)
+		ItemRows = append(ItemRows, item)
 	}
+	
+    if err = rows.Err(); err != nil {
+        return nil, fmt.Errorf("error iterating rows: %v", err)
+    }
 
 	return ItemRows, nil
 }
 
-func (c *SQLTodoController) ViewItemsDone(item *model.Item) ([]model.Item, error) {
-	return c.ViewItems(item, "SELECT * FROM items_done")
+func (c *SQLTodoController) ViewItemsDone() ([]model.Item, error) {
+	return c.ViewItems("SELECT * FROM items_done")
 }
 
 func (c *SQLTodoController) ViewItemTagsName(item *model.Item) ([]model.Tag, error) {
