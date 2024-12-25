@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gocasts/ToDoApp/internal/model"
 	now "gocasts/ToDoApp/internal/pkg/time"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -67,30 +68,46 @@ func (c *SQLTodoController) AddItem(item *model.Item, tags ...string) error {
 	}
 	defer stmtIn.Close()
 
-	if _, err = stmtIn.Exec(item.Name, item.Description, now.Now()); err != nil {
+	test, err := stmtIn.Exec(item.Name, item.Description, now.Now()); 
+	
+	if err != nil {
 		return fmt.Errorf("failed to insert item: %v", err)
 	}
-	if tags != nil {
-		
-		err = c.AddItemTag(item.ID, tags)
+	
+	if tags != nil {	
+		id , err := test.LastInsertId()
 		if err != nil {
+			return fmt.Errorf("eRRRRRRRRRR: %v", err)
+		}	
+		if err = c.AddItemTag(strconv.Itoa(int(id)), tags); err != nil {
 			return fmt.Errorf(fmt.Sprintf("fail to add tags %s to item: ", tags), err)
 		}
-		err = c.AddTag(tags)
+
+		if err = c.AddTag(tags); err != nil {
+			return fmt.Errorf(fmt.Sprintf("fail to add tags %s to tags table: ", tags), err)
+		}
 	}
 
-	return err
+	return nil
 }
 
-func (c *SQLTodoController) AddItemTag(id string, tag []string) error {
-	q := `INSERT INTO item_tags (item_id, tag_id)
+func (c *SQLTodoController) AddItemTag(id string, tags []string) error {
+	params, placeHolders, _ := packTagParamsAndPlacholders(tags, true ,len(tags))
+
+	q := fmt.Sprintf(`INSERT INTO item_tags (item_id, tag_id)
 SELECT i.id, t.id
 FROM items i
-JOIN tags t ON t.name IN %s
-WHERE i.id = ?`
+JOIN tags t ON t.name IN (%s)
+WHERE i.id = ?`, placeHolders )
 
-	q = fmt.Sprintf("%s", q)
-	return nil
+	stmtIns , err := c.db.Prepare(q)
+	if err != nil {
+		return fmt.Errorf("failed to Prepare addItemTag statement: %v", err)
+	}
+	defer stmtIns.Close()
+	params = append(params, id)
+	_, err = stmtIns.Exec(params...)
+	return err
 }
 
 
