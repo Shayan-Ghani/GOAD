@@ -158,7 +158,7 @@ func (c *SQLTodoController) ViewItems(query ...string) ([]model.Item, error) {
 		}
 		ItemRows = append(ItemRows, item)
 	}
-	
+
     if err = rows.Err(); err != nil {
         return nil, fmt.Errorf("error iterating rows: %v", err)
     }
@@ -167,7 +167,7 @@ func (c *SQLTodoController) ViewItems(query ...string) ([]model.Item, error) {
 }
 
 func (c *SQLTodoController) ViewItemsDone() ([]model.Item, error) {
-	return c.ViewItems("SELECT * FROM items_done")
+	return c.ViewItems("SELECT * FROM items WHERE is_done = 1")
 }
 
 func (c *SQLTodoController) ViewItemTagsName(item *model.Item) ([]model.Tag, error) {
