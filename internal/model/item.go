@@ -2,7 +2,6 @@ package model
 
 import (
 	"time"
-	// "fmt"
 )
 
 type Item struct {
@@ -12,6 +11,7 @@ type Item struct {
 	IsDone      bool
 	CreatedAt   time.Time
 	ModifiedAt  time.Time
+	TagsNames []string
 }
 
 type Tag struct {
