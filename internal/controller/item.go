@@ -97,6 +97,22 @@ func (c *SQLTodoController) AddItem(item *model.Item, tags ...string) error {
 }
 
 func (c *SQLTodoController) AddItemTag(id string, tags []string) error {
+	var tagsToAdd []string
+	for _, tag := range tags {
+		if _, err := c.GetTagID(tag); err != nil {
+			if err != sql.ErrNoRows {
+				return err
+			}
+			tagsToAdd = append(tagsToAdd, tag)
+		}
+	}
+
+	if tagsToAdd != nil {
+		if err := c.AddTag(tagsToAdd); err != nil {
+			return err
+		}	
+	}
+
 	params, placeHolders, _ := packTagParamsAndPlacholders(tags, true, len(tags))
 
 	q := fmt.Sprintf(`INSERT INTO item_tags (item_id, tag_id)
