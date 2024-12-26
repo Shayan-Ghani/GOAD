@@ -129,6 +129,11 @@ func (c *SQLTodoController) ViewItem(item *model.Item) (*model.Item, error) {
 		return nil, fmt.Errorf("failed to scan row: %v", err)
 	}
 
+	item.TagsNames, err = c.ViewItemTagsName(item.ID)
+	if err != nil {
+		return nil, fmt.Errorf("getting item tags: %v", err)
+	}
+
 	return item, err
 }
 
@@ -156,6 +161,10 @@ func (c *SQLTodoController) ViewItems(query ...string) ([]model.Item, error) {
 		var item model.Item
 		if err = scanItem(rows, &item); err != nil {
 			return nil, fmt.Errorf("failed to scan row: %v", err)
+		}
+		item.TagsNames, err = c.ViewItemTagsName(item.ID)
+		if err != nil {
+			return nil, fmt.Errorf("getting item tags: %v", err)
 		}
 		ItemRows = append(ItemRows, item)
 	}
