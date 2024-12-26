@@ -19,9 +19,9 @@ func NewSQLTodoController(db *sql.DB) *SQLTodoController {
 }
 
 func scanItem(rows *sql.Rows, item *model.Item, row ...*sql.Row) error {
+	var isDone []byte
 	var createdAt []uint8
 	var modifiedAt []uint8
-	var isDone []byte
 
 	fields := []interface{}{
 		&item.ID,
@@ -45,20 +45,25 @@ func scanItem(rows *sql.Rows, item *model.Item, row ...*sql.Row) error {
 
 	item.IsDone = len(isDone) > 0 && isDone[0] == 1
 
-	if len(createdAt) > 0 {
-		parsedTime, err := time.Parse("2006-01-02 15:04:05", string(createdAt))
-		if err == nil {
-			item.CreatedAt = parsedTime
-		}
-	}
+	item.CreatedAt, err = parseDatetime(createdAt)
 
-	if len(modifiedAt) > 0 {
-		parsedTime, err := time.Parse("2006-01-02 15:04:05", string(modifiedAt))
-		if err == nil {
-			item.ModifiedAt = parsedTime
-		}
+	if err != nil {
+		return fmt.Errorf("parsing CreatedAt: %v",err)
 	}
-	return nil
+	item.ModifiedAt, err = parseDatetime(modifiedAt)
+	return err
+}
+
+func parseDatetime(datetime []uint8) (time.Time, error) {
+
+	if len(datetime) > 0 {
+		parsedTime, err := time.Parse("2006-01-02 15:04:05", string(datetime))
+		if err != nil {
+			return time.Time{}, fmt.Errorf("can't parse datetime (%s): %v", datetime, err)
+		}
+		return parsedTime, nil
+	}
+	return time.Time{}, nil
 }
 
 func (c *SQLTodoController) AddItem(item *model.Item, tags ...string) error {
@@ -68,17 +73,17 @@ func (c *SQLTodoController) AddItem(item *model.Item, tags ...string) error {
 	}
 	defer stmtIn.Close()
 
-	test, err := stmtIn.Exec(item.Name, item.Description, now.Now()); 
-	
+	test, err := stmtIn.Exec(item.Name, item.Description, now.Now())
+
 	if err != nil {
 		return fmt.Errorf("failed to insert item: %v", err)
 	}
-	
-	if tags != nil {	
-		id , err := test.LastInsertId()
+
+	if tags != nil {
+		id, err := test.LastInsertId()
 		if err != nil {
 			return fmt.Errorf("eRRRRRRRRRR: %v", err)
-		}	
+		}
 		if err = c.AddItemTag(strconv.Itoa(int(id)), tags); err != nil {
 			return fmt.Errorf(fmt.Sprintf("fail to add tags %s to item: ", tags), err)
 		}
@@ -92,15 +97,15 @@ func (c *SQLTodoController) AddItem(item *model.Item, tags ...string) error {
 }
 
 func (c *SQLTodoController) AddItemTag(id string, tags []string) error {
-	params, placeHolders, _ := packTagParamsAndPlacholders(tags, true ,len(tags))
+	params, placeHolders, _ := packTagParamsAndPlacholders(tags, true, len(tags))
 
 	q := fmt.Sprintf(`INSERT INTO item_tags (item_id, tag_id)
 SELECT i.id, t.id
 FROM items i
 JOIN tags t ON t.name IN (%s)
-WHERE i.id = ?`, placeHolders )
+WHERE i.id = ?`, placeHolders)
 
-	stmtIns , err := c.db.Prepare(q)
+	stmtIns, err := c.db.Prepare(q)
 	if err != nil {
 		return fmt.Errorf("failed to Prepare addItemTag statement: %v", err)
 	}
@@ -109,10 +114,6 @@ WHERE i.id = ?`, placeHolders )
 	_, err = stmtIns.Exec(params...)
 	return err
 }
-
-
-
-
 
 func (c *SQLTodoController) ViewItem(item *model.Item) (*model.Item, error) {
 	stmt, err := c.db.Prepare("SELECT * FROM items WHERE id = ?")
@@ -159,9 +160,9 @@ func (c *SQLTodoController) ViewItems(query ...string) ([]model.Item, error) {
 		ItemRows = append(ItemRows, item)
 	}
 
-    if err = rows.Err(); err != nil {
-        return nil, fmt.Errorf("error iterating rows: %v", err)
-    }
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating rows: %v", err)
+	}
 
 	return ItemRows, nil
 }
@@ -170,14 +171,40 @@ func (c *SQLTodoController) ViewItemsDone() ([]model.Item, error) {
 	return c.ViewItems("SELECT * FROM items WHERE is_done = 1")
 }
 
-func (c *SQLTodoController) ViewItemTagsName(item *model.Item) ([]model.Tag, error) {
+func (c *SQLTodoController) ViewItemTagsName(id string) ([]string, error) {
 	q := `SELECT name 
 	FROM tags where id in (
 	SELECT tag_id
 	FROM item_tags WHERE item_id = ?
 	)`
-	fmt.Println(q, item.ID)
-	return nil, nil
+
+	stmt, err := c.db.Prepare(q)
+	if err != nil {
+		return nil, fmt.Errorf("failed to prepare item tag name statement: %v", err)
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query(id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute query item tag name: %v", err)
+	}
+
+	defer rows.Close()
+
+	var itemTags []string
+	for rows.Next() {
+		var name string
+		if err := rows.Scan(&name); err != nil {
+			return nil, fmt.Errorf("can't read item tag name row: %v", err)
+		}
+		itemTags = append(itemTags, name)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating rows: %v", err)
+	}
+
+	return itemTags, nil
 }
 
 func (c *SQLTodoController) ViewItemsByTag(tag *model.Tag) ([]model.Item, error) {
@@ -223,8 +250,6 @@ func (c *SQLTodoController) DeleteItemTag(TagName string) error {
 
 }
 
-
-
 func (c *SQLTodoController) UpdateItem(item *model.Item, updates map[string]interface{}) error {
 	// Build query dynamically
 	var setFields []string
@@ -252,7 +277,7 @@ func (c *SQLTodoController) UpdateItem(item *model.Item, updates map[string]inte
 
 func (c *SQLTodoController) UpdateItemDone(id string) error {
 	q := "UPDATE items SET is_done = 1 WHERE id = ?"
-	stmt,err := c.db.Prepare(q)
+	stmt, err := c.db.Prepare(q)
 	if err != nil {
 		return fmt.Errorf("couldn't prepare update item is_done : %v", err)
 	}
