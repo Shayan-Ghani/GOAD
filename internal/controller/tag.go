@@ -62,7 +62,7 @@ func (c *SQLTodoController) AddTagInto(tag *model.Tag) error {
 
 func (c *SQLTodoController) DeleteTag(tag *model.Tag) error {
 	stmtDel, err := c.db.Prepare("DELETE from tags where name = ?")
-	if err == nil {
+	if err != nil {
 		return fmt.Errorf("could not prepare delete tag statement: %v", err)
 	}
 	defer stmtDel.Close()
@@ -70,5 +70,7 @@ func (c *SQLTodoController) DeleteTag(tag *model.Tag) error {
 	if _, err := stmtDel.Exec(tag.Name); err != nil {
 		return fmt.Errorf("could not query delete tag statement: %v", err)
 	}
-	return nil
+
+	err = c.DeleteItemTag(tag.Name)
+	return err
 }
