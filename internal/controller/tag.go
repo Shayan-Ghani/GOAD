@@ -7,26 +7,26 @@ import (
 	"strings"
 )
 
-func packTagParamsAndPlacholders(tags []string, itemTag bool, tagCount int) ([]interface{}, string, []string ) {
+func packTagParamsAndPlacholders(tags []string, itemTag bool, tagCount int) ([]interface{}, string, []string) {
 	params := make([]interface{}, 0, tagCount*2)
 	placeHolders := make([]string, tagCount)
 
 	for i, tag := range tags {
-		if !itemTag{
+		if !itemTag {
 			placeHolders[i] = "(?,?)"
 			params = append(params, tag, now.Now())
-		}else {
+		} else {
 			placeHolders[i] = "?"
 			params = append(params, tag)
 		}
 	}
 
-	return params, strings.Join(placeHolders, ","), placeHolders 
+	return params, strings.Join(placeHolders, ","), placeHolders
 }
 
 func (c *SQLTodoController) AddTag(tags []string) error {
 
-	params, placeHolders, _:= packTagParamsAndPlacholders(tags, false ,len(tags))
+	params, placeHolders, _ := packTagParamsAndPlacholders(tags, false, len(tags))
 
 	q := fmt.Sprintf("INSERT IGNORE INTO tags (name, created_at) VALUES %s", placeHolders)
 
@@ -58,6 +58,23 @@ func (c *SQLTodoController) AddTagInto(tag *model.Tag) error {
 	_, err = stmtIn.Exec(tag.Name)
 
 	return err
+}
+
+func (c *SQLTodoController) ViewTags(tag *model.Tag) ([]model.Tag, error) {
+	return nil, nil
+}
+
+func (c *SQLTodoController) GetTagID(name string) (string, error) {
+	var id string
+
+	stmt, err := c.db.Prepare("SELECT id FROM tags WHERE name = ?")
+	if err != nil {
+		return id, fmt.Errorf("failed to prepare insert statement: %v", err)
+	}
+	defer stmt.Close()
+	
+	err = stmt.QueryRow(name).Scan(&id)
+	return id, err
 }
 
 func (c *SQLTodoController) DeleteTag(tag *model.Tag) error {
