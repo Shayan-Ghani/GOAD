@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gocasts/ToDoApp/internal/model"
 	now "gocasts/ToDoApp/internal/pkg/time"
+	"gocasts/ToDoApp/internal/pkg/validation"
 	"strings"
 )
 
@@ -25,6 +26,9 @@ func packTagParamsAndPlacholders(tags []string, itemTag bool, tagCount int) ([]i
 }
 
 func (c *SQLTodoController) AddTag(tags []string) error {
+	if err := validation.ValidateTagNames(tags); err != nil {
+		return fmt.Errorf("validation failed: %w", err)
+	}
 
 	params, placeHolders, _ := packTagParamsAndPlacholders(tags, false, len(tags))
 
@@ -42,13 +46,6 @@ func (c *SQLTodoController) AddTag(tags []string) error {
 
 func (c *SQLTodoController) AddTagInto(tag *model.Tag) error {
 	q := "INSERT IGNORE INTO tags (name,created_at) VALUES (?, ?)"
-	// a := `
-	// INSERT IGNORE INTO tags (name)
-	// VALUES
-	// ('Electronics'),
-	// ('Gadgets'),
-	// ('Smartphones');
-	// `
 	stmtIn, err := c.db.Prepare(q)
 	if err != nil {
 		return fmt.Errorf("failed to prepare insert statement: %v", err)
@@ -64,7 +61,7 @@ func (c *SQLTodoController) ViewTags(tag *model.Tag) ([]model.Tag, error) {
 	return nil, nil
 }
 
-func (c *SQLTodoController) GetTagID(name string) (string, error) {
+func (c *SQLTodoController) getTagID(name string) (string, error) {
 	var id string
 
 	stmt, err := c.db.Prepare("SELECT id FROM tags WHERE name = ?")
@@ -72,7 +69,7 @@ func (c *SQLTodoController) GetTagID(name string) (string, error) {
 		return id, fmt.Errorf("failed to prepare insert statement: %v", err)
 	}
 	defer stmt.Close()
-	
+
 	err = stmt.QueryRow(name).Scan(&id)
 	return id, err
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gocasts/ToDoApp/internal/model"
 	now "gocasts/ToDoApp/internal/pkg/time"
+	"gocasts/ToDoApp/internal/pkg/validation"
 	"strconv"
 	"strings"
 	"time"
@@ -48,7 +49,7 @@ func scanItem(rows *sql.Rows, item *model.Item, row ...*sql.Row) error {
 	item.CreatedAt, err = parseDatetime(createdAt)
 
 	if err != nil {
-		return fmt.Errorf("parsing CreatedAt: %v",err)
+		return fmt.Errorf("parsing CreatedAt: %v", err)
 	}
 	item.ModifiedAt, err = parseDatetime(modifiedAt)
 	return err
@@ -97,9 +98,13 @@ func (c *SQLTodoController) AddItem(item *model.Item, tags ...string) error {
 }
 
 func (c *SQLTodoController) AddItemTag(id string, tags []string) error {
+	if err := validation.ValidateTagNames(tags); err != nil{
+		return fmt.Errorf("validation failed: %w", err)
+	}
+	
 	var tagsToAdd []string
 	for _, tag := range tags {
-		if _, err := c.GetTagID(tag); err != nil {
+		if _, err := c.getTagID(tag); err != nil {
 			if err != sql.ErrNoRows {
 				return err
 			}
@@ -110,7 +115,7 @@ func (c *SQLTodoController) AddItemTag(id string, tags []string) error {
 	if tagsToAdd != nil {
 		if err := c.AddTag(tagsToAdd); err != nil {
 			return err
-		}	
+		}
 	}
 
 	params, placeHolders, _ := packTagParamsAndPlacholders(tags, true, len(tags))
@@ -276,7 +281,7 @@ func (c *SQLTodoController) DeleteItemTag(TagName string) error {
 }
 
 func (c *SQLTodoController) UpdateItem(item *model.Item, updates map[string]interface{}) error {
-	// Build query dynamically
+	
 	var setFields []string
 	var args []interface{}
 
@@ -285,7 +290,7 @@ func (c *SQLTodoController) UpdateItem(item *model.Item, updates map[string]inte
 		args = append(args, value)
 	}
 
-	// Add ID to args
+	
 	args = append(args, item.ID)
 
 	query := fmt.Sprintf("UPDATE items SET %s WHERE id = ?", strings.Join(setFields, ", "))
@@ -315,35 +320,4 @@ func (c *SQLTodoController) UpdateItemDone(id string) error {
 // func (c *SQLTodoController) UpdateItemName(id string, name string) error {
 
 // 	return nil
-// }
-
-/// Getter and setters
-
-// func (c *SQLTodoController) GetId() string {
-// 	return c.Id
-// }
-
-// //	func (c *SQLTodoController) GetName() string {
-// //		return c.name
-// //	}
-// func (c *SQLTodoController) GetTag(tag string) string {
-// 	return fmt.Sprintf(tag)
-// }
-// func (c *SQLTodoController) GetTags() []string {
-// 	return c.tag
-// }
-
-// // func (c *SQLTodoController) GetDesc() string {
-// // 	return c.description
-// // }
-
-// func (c *SQLTodoController) SetName(name string) {
-// 	c.name = name
-// }
-// func (c *SQLTodoController) SetTag(tag ...string) {
-// 	c.tag = tag
-// }
-
-// func (c *SQLTodoController) SetDesc(desc string) {
-// 	c.description = desc
 // }
