@@ -266,14 +266,14 @@ func (c *SQLTodoController) DeleteItem(item *model.Item) error {
 	return nil
 }
 
-func (c *SQLTodoController) DeleteItemTag(TagName string) error {
-	stmtDel, err := c.db.Prepare("DELETE from item_tags where tag_id = (SELECT id FROM tags where name = ?)")
+func (c *SQLTodoController) DeleteItemTag(id string, TagName string) error {
+	stmtDel, err := c.db.Prepare("DELETE from item_tags where item_id = ? and tag_id = (SELECT id FROM tags where name = ?)")
 	if err != nil {
 		return fmt.Errorf("could not prepare delete tag statement: %v", err)
 	}
 	defer stmtDel.Close()
 
-	if _, err := stmtDel.Exec(TagName); err != nil {
+	if _, err := stmtDel.Exec(id, TagName); err != nil {
 		return fmt.Errorf("could not query delete tag statement: %v", err)
 	}
 	return nil

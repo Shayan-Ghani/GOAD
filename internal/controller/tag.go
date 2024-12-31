@@ -84,7 +84,5 @@ func (c *SQLTodoController) DeleteTag(tag *model.Tag) error {
 	if _, err := stmtDel.Exec(tag.Name); err != nil {
 		return fmt.Errorf("could not query delete tag statement: %v", err)
 	}
-
-	err = c.DeleteItemTag(tag.Name)
 	return err
 }
