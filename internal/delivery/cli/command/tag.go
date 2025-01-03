@@ -19,8 +19,8 @@ func NewTagCommand(ctrl *controller.SQLTodoController, action string) *TagComman
 	}
 
 	usages := map[string]string{
-		"view":   "tag view <id> [-done] [all] [-tag <tagname>]",
-		"delete": "tag delete <id>",
+		"view":   "tag view -i <id> [-done] [--all] [-tag <tagname>]",
+		"delete": "tag delete -i <id>",
 	}
 
 	return &TagCommand{
@@ -37,6 +37,8 @@ func NewTagCommand(ctrl *controller.SQLTodoController, action string) *TagComman
 func (tcmd *TagCommand) Exec(flags []string) error {
 
 	switch tcmd.action {
+	case "add":
+		return tcmd.handleAdd(flags)
 	case "view":
 		return tcmd.handleView(flags)
 	case "delete":
@@ -46,6 +48,9 @@ func (tcmd *TagCommand) Exec(flags []string) error {
 	}
 }
 
+func (tcmd *TagCommand) handleAdd(flags []string) error {
+	return nil
+}
 func (tcmd *TagCommand) handleView(flags []string) error {
 	return nil
 }

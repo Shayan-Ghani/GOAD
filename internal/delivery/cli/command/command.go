@@ -4,7 +4,7 @@ type Command interface {
 	Name() string
 	Description() string
 	Usage() string
-	Exec(flags []string) error
+	Exec(args []string) error
 }
 
 type BaseCommand struct {
