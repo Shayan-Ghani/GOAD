@@ -18,7 +18,7 @@ func NewCLI(controller *controller.SQLTodoController) *CLI {
 		controller: controller,
 		commands:   make(map[string]command.Command),
 		validCommands: map[string][]string{
-			"item": {"add", "view", "delete", "update"},
+			"item": {"add", "view", "delete", "update", "done"},
 			"tag":  {"add", "view", "delete"},
 		},
 	}

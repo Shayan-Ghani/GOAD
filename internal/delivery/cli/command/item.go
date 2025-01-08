@@ -58,6 +58,8 @@ func (icmd *ItemCommand) Exec(args []string) error {
 		return icmd.handleDelete()
 	case "update":
 		return icmd.handleUpdate()
+	case "done":
+		return icmd.handleDone()
 	default:
 		return flag.ErrHelp
 	}
@@ -92,13 +94,11 @@ func (icmd *ItemCommand) handleAdd() error {
 	if isFlagDefined(icmd.flags.Tags) {
 		tags = strings.Split(icmd.flags.Tags, ",")
 	}
-	if err = icmd.controller.AddItem(&model.Item{
+	err = icmd.controller.AddItem(&model.Item{
 		Name:        icmd.flags.Name,
 		Description: icmd.flags.Description,
-	}, tags...); err != nil {
-
-		return fmt.Errorf("handleAdd: %s", err)
-	}
+	}, tags...)
+	
 	return err
 
 }
@@ -152,9 +152,21 @@ func (icmd *ItemCommand) handleUpdate() error {
 	return err
 }
 
+func (icmd *ItemCommand) handleDone() error {
+	var err error
+
+	if err = validation.ValidateFlagsDefinedStr(icmd.flags.ID); err != nil {
+		return fmt.Errorf("%w", err)
+	}
+
+	err = icmd.controller.UpdateItemDone(icmd.flags.ID)
+
+	return err
+}
+
 func (icmd *ItemCommand) handleDelete() error {
 	var err error
-	
+
 	if err = validation.ValidateFlagsDefinedStr(icmd.flags.ID); err != nil {
 		return fmt.Errorf("%w", err)
 	}
