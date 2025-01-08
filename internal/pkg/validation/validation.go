@@ -73,9 +73,9 @@ func ValidateFlagCount(provided int, required int) error {
 }
 
 
-func ValidateFlagsDefinedStr(flagSet map[string]interface{}, flags ...string) error{
+func ValidateFlagsDefinedStr(flags ...string) error{
    for _, f := range flags{
-	   if flagSet[f] == "" {
+	   if f == "" {
 		   return &ValidationError{
 			   Field: "argument",
 			   Message: fmt.Sprintf("%s is required!", f) ,
