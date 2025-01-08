@@ -8,7 +8,6 @@ import (
 type TagCommand struct {
 	BaseCommand
 	controller *controller.SQLTodoController
-	action     string
 }
 
 func NewTagCommand(ctrl *controller.SQLTodoController, action string) *TagCommand {
@@ -28,15 +27,15 @@ func NewTagCommand(ctrl *controller.SQLTodoController, action string) *TagComman
 			name:        action,
 			description: descriptions[action],
 			usage:       usages[action],
+			flags: &Flags{},
 		},
 		controller: ctrl,
-		action:     action,
 	}
 }
 
 func (tcmd *TagCommand) Exec(flags []string) error {
 
-	switch tcmd.action {
+	switch tcmd.name {
 	case "add":
 		return tcmd.handleAdd(flags)
 	case "view":
@@ -44,7 +43,7 @@ func (tcmd *TagCommand) Exec(flags []string) error {
 	case "delete":
 		return tcmd.handleDelete(flags)
 	default:
-		return fmt.Errorf("unknown action (%s) for Item", tcmd.action)
+		return fmt.Errorf("unknown action (%s) for Item", tcmd.name)
 	}
 }
 
