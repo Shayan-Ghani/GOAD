@@ -10,6 +10,13 @@ type ValidationError struct {
 	Message string
 }
 
+func New(field string, msg string) error {
+	return &ValidationError{
+		Field:   field,
+		Message: msg,
+	}
+}
+
 func (e *ValidationError) Error() string {
 	return fmt.Sprintf("%s: %s", e.Field, e.Message)
 }
@@ -72,15 +79,14 @@ func ValidateFlagCount(provided int, required int) error {
 	return nil
 }
 
-
-func ValidateFlagsDefinedStr(flags ...string) error{
-   for _, f := range flags{
-	   if f == "" {
-		   return &ValidationError{
-			   Field: "argument",
-			   Message: fmt.Sprintf("%s is required!", f) ,
-		   }
-	   }
-   }
+func ValidateFlagsDefinedStr(argNames []string, flags ...string) error {
+	for i, f := range flags {
+		if f == "" {
+			return &ValidationError{
+				Field:   "argument",
+				Message: fmt.Sprintf("%s is required!", argNames[i]),
+			}
+		}
+	}
 	return nil
 }
