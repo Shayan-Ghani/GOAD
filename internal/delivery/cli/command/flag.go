@@ -1,7 +1,7 @@
 package command
 
 func isFlagDefined(flags ...string) bool {
-	for _, f := range flags{
+	for _, f := range flags {
 		if f == "" {
 			return false
 		}
@@ -15,7 +15,7 @@ type Flags struct {
 	Description string
 	Tags        string
 	Short       string
-	TagNames    string
 	All         bool
 	Done        bool
+	DelTags     bool
 }
