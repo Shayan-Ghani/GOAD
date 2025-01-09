@@ -57,14 +57,15 @@ func (c *CLI) Exec(args []string) error {
 
 	c.registerCommands(resource, action)
 
-	return c.commands[resource].Exec(args[1:])
+	return c.commands[resource].Exec(args)
 }
 
 func (c *CLI) PrintUsage() {
 	fmt.Println("Available commands:")
-	for rsc, cmd := range c.commands {
-		fmt.Printf("\n%s commands:\n", rsc)
-		fmt.Printf("  %-10s\t%s\n", cmd.Name(), cmd.Description())
-		fmt.Printf("    Usage: %s\n", cmd.Usage())
+
+	for rsc, cmd := range c.validCommands{
+		fmt.Printf("%s %s \n", rsc, cmd)
+		// fmt.Printf("  %-10s\t%s\n", cmd.Name(), cmd.Description())
+		// fmt.Printf("    Usage: %s\n", cmd.Usage())
 	}
 }

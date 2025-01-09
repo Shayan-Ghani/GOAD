@@ -27,10 +27,10 @@ func NewItemCommand(ctrl *controller.SQLTodoController, action string) *ItemComm
 
 	usages := map[string]string{
 		"add":    "item add -n <name> -d <description> [-t tag1,tag2]",
-		"view":   "item view -i <id> [-done] [--all] [--tag-names <tagnames>]",
+		"view":   "item view -i <id> [--done=true] [--all=true] [--tag-names <tagnames>]",
 		"delete": "item delete -i <id> [--tags] [--tag-names]",
-		"update": "item update -i <id> [-n <name>] [-d <description>] [-t/--tags]",
-		"done":   "item done <id>",
+		"update": "item update -i <id> [-n <name>] [-d <description>] [-t <tag1,tag2>] [--append=true]",
+		"done":   "item done -i <id>",
 	}
 
 	return &ItemCommand{
@@ -65,21 +65,20 @@ func (icmd *ItemCommand) Exec(args []string) error {
 	}
 }
 
-// TODO: fix all flag type
 func (icmd *ItemCommand) parseFlags(args []string) error {
 	fs := flag.NewFlagSet(args[1], flag.ExitOnError)
 	resource := args[0]
 
 	fs.StringVar(&icmd.flags.Name, "n", "", fmt.Sprintf("%s name", resource))
-	fs.StringVar(&icmd.flags.All, "all", "", fmt.Sprintf("%s all references (bulk)", resource))
 	fs.StringVar(&icmd.flags.ID, "i", "", "item id")
 	fs.StringVar(&icmd.flags.Description, "d", "", "item description")
 	fs.StringVar(&icmd.flags.Tags, "t", "", "item tags")
 	fs.StringVar(&icmd.flags.Short, "short", "", "item short view (no tags)")
 	fs.StringVar(&icmd.flags.TagNames, "tag-names", "", "item tag names")
+	fs.BoolVar(&icmd.flags.All, "all", false, fmt.Sprintf("%s all references (bulk)", resource))
 	fs.BoolVar(&icmd.flags.Done, "done", false, "change status of an item to done")
 
-	err := fs.Parse(args[1:])
+	err := fs.Parse(args[2:])
 	return err
 }
 
@@ -98,7 +97,7 @@ func (icmd *ItemCommand) handleAdd() error {
 		Name:        icmd.flags.Name,
 		Description: icmd.flags.Description,
 	}, tags...)
-	
+
 	return err
 
 }
@@ -106,7 +105,7 @@ func (icmd *ItemCommand) handleAdd() error {
 // TODO: add single item done view
 func (icmd *ItemCommand) handleView() error {
 	var err error
-	if !isFlagDefined(icmd.flags.ID) {
+	if icmd.flags.All{
 		var items []model.Item
 		if icmd.flags.Done {
 			items, err = icmd.controller.ViewItemsDone()
@@ -120,6 +119,11 @@ func (icmd *ItemCommand) handleView() error {
 			}
 		}
 		response.TabWriter(items)
+		return nil
+	}
+
+	if err = validation.ValidateFlagsDefinedStr(icmd.flags.ID); err != nil {
+		return fmt.Errorf("%w", err)
 	}
 
 	var item *model.Item
@@ -141,6 +145,8 @@ func (icmd *ItemCommand) handleUpdate() error {
 	if err = validation.ValidateFlagsDefinedStr(icmd.flags.ID); err != nil {
 		return fmt.Errorf("%w", err)
 	}
+
+	
 
 	err = icmd.controller.UpdateItem(&model.Item{
 		ID: icmd.flags.ID,

@@ -11,11 +11,11 @@ func isFlagDefined(flags ...string) bool {
 
 type Flags struct {
 	Name        string
-	All         string
 	ID          string
 	Description string
 	Tags        string
 	Short       string
 	TagNames    string
+	All         bool
 	Done        bool
 }
