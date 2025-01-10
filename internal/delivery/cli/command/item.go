@@ -61,13 +61,13 @@ func (icmd *ItemCommand) Exec(args []string) error {
 	case "done":
 		return icmd.handleDone()
 	default:
-		return flag.ErrHelp
+		return nil
 	}
 }
 
 func (icmd *ItemCommand) parseFlags(args []string) error {
-	fs := flag.NewFlagSet(args[1], flag.ExitOnError)
 	resource := args[0]
+	fs := flag.NewFlagSet(resource, flag.ExitOnError)
 
 	fs.StringVar(&icmd.flags.Name, "n", "", fmt.Sprintf("%s name", resource))
 	fs.StringVar(&icmd.flags.ID, "i", "", "item id")
@@ -79,6 +79,9 @@ func (icmd *ItemCommand) parseFlags(args []string) error {
 	fs.BoolVar(&icmd.flags.DelTags, "del-tags", false, "when set to ture, deletes all tags of the item")
 
 	err := fs.Parse(args[2:])
+	if args[1] == "--help"{
+		fs.PrintDefaults()
+	}
 	return err
 }
 
