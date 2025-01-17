@@ -14,19 +14,27 @@ func TabWriter(arg ...any) {
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', tabwriter.TabIndent)
 	fmt.Fprintln(w, "ID\tName\tDescription\tStatus\tTags\tCreated_At")
 	fmt.Fprintln(w, "--\t----\t-----------\t------\t----\t----")
-
+	
 	for _, argItem := range arg {
-		switch items := argItem.(type) {
+		switch entity := argItem.(type) {
 		case []model.Item:
-			if len(items) == 0 {
+			if len(entity) == 0 {
 				fmt.Println("No items found!")
 				continue
 			}
-			for _, item := range items {
+			for _, item := range entity {
 				printItem(w, item)
 			}
 		case *model.Item:
-			printItem(w, *items)
+			printItem(w, *entity)
+		case []model.Tag:
+			if len(entity) == 0 {
+				fmt.Println("No tag found!")
+				continue
+			}
+			for _, tag := range entity {
+				printTag(w, tag)
+			}
 		default:
 			fmt.Printf("TabWriter: unexpected type %T\n", argItem)
 		}
@@ -36,7 +44,7 @@ func TabWriter(arg ...any) {
 }
 
 func printItem(w *tabwriter.Writer, item model.Item) {
-	status, tags, createdAt, err:= formatter.FormatItemRes(w, item)
+	status, tags, createdAt, err := formatter.FormatItemRes(w, item)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -49,5 +57,14 @@ func printItem(w *tabwriter.Writer, item model.Item) {
 		status,
 		tags,
 		createdAt,
+	)
+}
+func printTag(w *tabwriter.Writer, tag model.Tag) {
+	fmt.Fprintln(w, "Name\tCreated_At")
+	fmt.Fprintln(w, "--\t------")
+	
+	fmt.Fprintf(w, "%s\t%s\n",
+		tag.Name,
+		tag.CreatedAt,
 	)
 }
