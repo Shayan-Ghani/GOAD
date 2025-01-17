@@ -1,0 +1,385 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" version="26.0.2">
+  <diagram name="Page-1" id="hMNlqnaelPV77nQoPete">
+    <mxGraphModel dx="1290" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="h5jxzjJno4I67oUQHNnI-59" value="" style="group" parent="1" connectable="0" vertex="1">
+          <mxGeometry x="22" y="20" width="783.64" height="227.27" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-49" value="" style="group" parent="h5jxzjJno4I67oUQHNnI-59" connectable="0" vertex="1">
+          <mxGeometry width="783.64" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-45" value="" style="group" parent="h5jxzjJno4I67oUQHNnI-49" connectable="0" vertex="1">
+          <mxGeometry width="690.9122969837587" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="L5o3YzWehUa-uTc-loFa-3" value="item :" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=20;" parent="h5jxzjJno4I67oUQHNnI-45" vertex="1">
+          <mxGeometry width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-55" value="" style="group" parent="h5jxzjJno4I67oUQHNnI-45" connectable="0" vertex="1">
+          <mxGeometry x="18.181902552204175" y="69.99727272727272" width="436.36566125290017" height="54.54272727272726" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-55" source="h5jxzjJno4I67oUQHNnI-11" target="h5jxzjJno4I67oUQHNnI-13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-50" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-55" source="h5jxzjJno4I67oUQHNnI-11" target="h5jxzjJno4I67oUQHNnI-13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="h5jxzjJno4I67oUQHNnI-55" source="h5jxzjJno4I67oUQHNnI-11" target="h5jxzjJno4I67oUQHNnI-52" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-11" value="view" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-55" vertex="1">
+          <mxGeometry width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-55" source="h5jxzjJno4I67oUQHNnI-13" target="h5jxzjJno4I67oUQHNnI-15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-13" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;-i ID&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;fillColor=#f8cecc;strokeColor=#b85450;" parent="h5jxzjJno4I67oUQHNnI-55" vertex="1">
+          <mxGeometry x="127.27331786542922" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="h5jxzjJno4I67oUQHNnI-55" source="h5jxzjJno4I67oUQHNnI-15" target="h5jxzjJno4I67oUQHNnI-23" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="436.36566125290017" y="13.63636363636364" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-15" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;--short (no tags)&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-55" vertex="1">
+          <mxGeometry x="254.54663573085844" width="109.09141531322504" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-23" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;--tags&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-55" vertex="1">
+          <mxGeometry x="381.81995359628763" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-52" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;bulk&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;fillColor=#d5e8d4;strokeColor=#82b366;" parent="h5jxzjJno4I67oUQHNnI-55" vertex="1">
+          <mxGeometry x="127.27331786542922" y="40" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-57" value="" style="group" parent="h5jxzjJno4I67oUQHNnI-45" connectable="0" vertex="1">
+          <mxGeometry x="18.181902552204175" y="150.00272727272727" width="436.36566125290017" height="27.272727272727266" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-57" source="h5jxzjJno4I67oUQHNnI-26" target="h5jxzjJno4I67oUQHNnI-28" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-26" value="delete&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-57" vertex="1">
+          <mxGeometry width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-57" source="h5jxzjJno4I67oUQHNnI-28" target="h5jxzjJno4I67oUQHNnI-30" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-28" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;-i ID&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;fillColor=#f8cecc;strokeColor=#b85450;" parent="h5jxzjJno4I67oUQHNnI-57" vertex="1">
+          <mxGeometry x="127.27331786542922" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="h5jxzjJno4I67oUQHNnI-57" source="h5jxzjJno4I67oUQHNnI-30" target="h5jxzjJno4I67oUQHNnI-31" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="436.36566125290017" y="13.63636363636364" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-30" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;-t (name)&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-57" vertex="1">
+          <mxGeometry x="254.54663573085844" width="109.09141531322504" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-31" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;--tags&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-57" vertex="1">
+          <mxGeometry x="381.81995359628763" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-58" value="" style="group" parent="h5jxzjJno4I67oUQHNnI-45" connectable="0" vertex="1">
+          <mxGeometry x="18.181902552204175" y="27.272727272727273" width="436.36566125290017" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-58" source="h5jxzjJno4I67oUQHNnI-1" target="h5jxzjJno4I67oUQHNnI-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-1" value="add" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-58" vertex="1">
+          <mxGeometry width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-58" source="h5jxzjJno4I67oUQHNnI-2" target="h5jxzjJno4I67oUQHNnI-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-2" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;-n name&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;fillColor=#f8cecc;strokeColor=#b85450;" parent="h5jxzjJno4I67oUQHNnI-58" vertex="1">
+          <mxGeometry x="127.27331786542922" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-58" source="h5jxzjJno4I67oUQHNnI-4" target="h5jxzjJno4I67oUQHNnI-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-4" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;-d desc&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-58" vertex="1">
+          <mxGeometry x="254.54663573085844" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-6" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;-t tags,n&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-58" vertex="1">
+          <mxGeometry x="381.81995359628763" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-46" value="&lt;span&gt;-t/--tags []&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=13;" parent="h5jxzjJno4I67oUQHNnI-49" vertex="1">
+          <mxGeometry x="729.0942923433875" y="172.72727272727272" width="54.54570765661253" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-56" value="" style="group" parent="h5jxzjJno4I67oUQHNnI-59" connectable="0" vertex="1">
+          <mxGeometry x="18.18190255220418" y="199.99727272727273" width="672.7303944315545" height="27.27272727272728" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-56" source="h5jxzjJno4I67oUQHNnI-33" target="h5jxzjJno4I67oUQHNnI-35" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-33" value="Update" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-56" vertex="1">
+          <mxGeometry width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-56" source="h5jxzjJno4I67oUQHNnI-35" target="h5jxzjJno4I67oUQHNnI-37" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-35" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;-i ID&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;fillColor=#f8cecc;strokeColor=#b85450;" parent="h5jxzjJno4I67oUQHNnI-56" vertex="1">
+          <mxGeometry x="99.81331786542921" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-36" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="h5jxzjJno4I67oUQHNnI-56" source="h5jxzjJno4I67oUQHNnI-37" target="h5jxzjJno4I67oUQHNnI-38" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="436.36566125290017" y="13.636363636363626" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-37" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;--done/-d&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-56" vertex="1">
+          <mxGeometry x="209.81663573085845" width="109.09141531322504" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-40" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-56" source="h5jxzjJno4I67oUQHNnI-38" target="h5jxzjJno4I67oUQHNnI-39" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-38" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;--map {&quot;&quot; : &quot;&quot;}&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;fillColor=#fff2cc;strokeColor=#d6b656;" parent="h5jxzjJno4I67oUQHNnI-56" vertex="1">
+          <mxGeometry x="349.81995359628763" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-42" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-56" source="h5jxzjJno4I67oUQHNnI-39" target="h5jxzjJno4I67oUQHNnI-41" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-39" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;-n name&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-56" vertex="1">
+          <mxGeometry x="454.54756380510435" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-44" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-56" source="h5jxzjJno4I67oUQHNnI-41" target="h5jxzjJno4I67oUQHNnI-43" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-41" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;-d desc&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-56" vertex="1">
+          <mxGeometry x="536.3661252900231" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-43" value="&lt;span&gt;-ta/--tags-append []&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=11;fillColor=#fff2cc;strokeColor=#d6b656;" parent="h5jxzjJno4I67oUQHNnI-56" vertex="1">
+          <mxGeometry x="618.184686774942" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-47" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-59" source="h5jxzjJno4I67oUQHNnI-43" target="h5jxzjJno4I67oUQHNnI-46" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-84" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="177.45522041763343" y="350.9090909090909" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-112" value="" style="group" parent="1" connectable="0" vertex="1">
+          <mxGeometry x="32" y="310" width="209.8209280742459" height="140.90545454545452" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-63" value="tag" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=20;" parent="h5jxzjJno4I67oUQHNnI-112" vertex="1">
+          <mxGeometry width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-65" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-112" source="h5jxzjJno4I67oUQHNnI-68" target="h5jxzjJno4I67oUQHNnI-70" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-66" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-112" source="h5jxzjJno4I67oUQHNnI-68" target="h5jxzjJno4I67oUQHNnI-70" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-68" value="view" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-112" vertex="1">
+          <mxGeometry x="18.18190255220418" y="53.627272727272725" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-70" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;bulk&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;fillColor=#d5e8d4;strokeColor=#82b366;" parent="h5jxzjJno4I67oUQHNnI-112" vertex="1">
+          <mxGeometry x="145.4552204176334" y="53.627272727272725" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-76" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-112" source="h5jxzjJno4I67oUQHNnI-77" target="h5jxzjJno4I67oUQHNnI-79" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-77" value="delete&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;" parent="h5jxzjJno4I67oUQHNnI-112" vertex="1">
+          <mxGeometry x="28.00190255220418" y="113.63272727272727" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-79" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;-n name&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fontSize=18;fillColor=#f8cecc;strokeColor=#b85450;" parent="h5jxzjJno4I67oUQHNnI-112" vertex="1">
+          <mxGeometry x="155.2752204176334" y="113.63272727272727" width="54.54570765661252" height="27.272727272727273" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-174" value="" style="group" parent="1" connectable="0" vertex="1">
+          <mxGeometry x="290" y="410" width="520" height="580" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-113" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-116" target="h5jxzjJno4I67oUQHNnI-128" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-114" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-116" target="h5jxzjJno4I67oUQHNnI-121" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-115" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-116" target="h5jxzjJno4I67oUQHNnI-132" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-116" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;TAG&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" vertex="1">
+          <mxGeometry x="72.40506329113924" y="42.00762388818297" width="47.59493670886076" height="47.59493670886076" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-117" value="" style="group;fillColor=#fff2cc;strokeColor=#d6b656;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" connectable="0" vertex="1">
+          <mxGeometry x="118.48101265822785" y="167.29351969504447" width="78.9873417721519" height="125.2858958068615" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-118" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-117" source="h5jxzjJno4I67oUQHNnI-121" target="h5jxzjJno4I67oUQHNnI-122" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-119" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-117" source="h5jxzjJno4I67oUQHNnI-121" target="h5jxzjJno4I67oUQHNnI-122" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-120" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-117" source="h5jxzjJno4I67oUQHNnI-121" target="h5jxzjJno4I67oUQHNnI-123" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="24.303797468354425" y="77.5579354994857" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-121" value="Add" style="whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-117" vertex="1">
+          <mxGeometry width="72.9113924050633" height="35.79597023053186" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-122" value="Bulk" style="rhombus;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-117" vertex="1">
+          <mxGeometry x="39.49620253164557" y="77.5579354994857" width="48.60759493670885" height="47.72796030737581" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-123" value="single" style="rhombus;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-117" vertex="1">
+          <mxGeometry x="-19.746835443037973" y="77.5579354994857" width="42.531645569620245" height="47.72796030737581" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-124" value="" style="group;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" connectable="0" vertex="1">
+          <mxGeometry y="167.29351969504447" width="92.15189873417721" height="125.2858958068615" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-125" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-124" source="h5jxzjJno4I67oUQHNnI-128" target="h5jxzjJno4I67oUQHNnI-129" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-126" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-124" source="h5jxzjJno4I67oUQHNnI-128" target="h5jxzjJno4I67oUQHNnI-129" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-127" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-124" source="h5jxzjJno4I67oUQHNnI-128" target="h5jxzjJno4I67oUQHNnI-130" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="40.316455696202524" y="77.5579354994857" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-128" value="View" style="whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-124" vertex="1">
+          <mxGeometry x="17.278481012658226" width="69.1139240506329" height="35.79597023053186" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-129" value="Bulk" style="rhombus;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-124" vertex="1">
+          <mxGeometry x="46.075949367088604" y="77.5579354994857" width="46.075949367088604" height="47.72796030737581" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-130" value="single" style="rhombus;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-124" vertex="1">
+          <mxGeometry y="77.5579354994857" width="40.316455696202524" height="47.72796030737581" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-131" value="" style="group;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" connectable="0" vertex="1">
+          <mxGeometry x="164.55696202531644" y="86.2261753494282" width="78.9873417721519" height="125.2858958068615" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-132" value="Delete(by name)" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-131" vertex="1">
+          <mxGeometry width="72.9113924050633" height="35.79597023053186" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-133" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-137" target="h5jxzjJno4I67oUQHNnI-145" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-134" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-137" target="h5jxzjJno4I67oUQHNnI-140" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-135" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-137" target="h5jxzjJno4I67oUQHNnI-148" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-136" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.604;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-137" target="h5jxzjJno4I67oUQHNnI-164" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="374.9704641350211" y="344.1677255400254" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-137" value="&lt;span style=&quot;font-size: 18px;&quot;&gt;ITEM&lt;/span&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" vertex="1">
+          <mxGeometry x="348.8607594936709" y="42.00762388818297" width="47.59493670886076" height="47.59493670886076" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-138" value="" style="group;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" connectable="0" vertex="1">
+          <mxGeometry x="394.93670886075944" y="167.29351969504447" width="78.9873417721519" height="125.2858958068615" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-139" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-138" source="h5jxzjJno4I67oUQHNnI-140" target="h5jxzjJno4I67oUQHNnI-141" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="24.303797468354425" y="77.5579354994857" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-140" value="Add" style="whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-138" vertex="1">
+          <mxGeometry width="72.9113924050633" height="35.79597023053186" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-141" value="single" style="rhombus;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-138" vertex="1">
+          <mxGeometry x="15.191898734177213" y="77.5579354994857" width="42.531645569620245" height="47.72796030737581" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-142" value="" style="group;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" connectable="0" vertex="1">
+          <mxGeometry x="276.4556962025316" y="167.29351969504447" width="92.15189873417721" height="125.2858958068615" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-143" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-142" source="h5jxzjJno4I67oUQHNnI-145" target="h5jxzjJno4I67oUQHNnI-146" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-144" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-142" source="h5jxzjJno4I67oUQHNnI-145" target="h5jxzjJno4I67oUQHNnI-146" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-145" value="View" style="whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-142" vertex="1">
+          <mxGeometry x="17.278481012658226" width="69.1139240506329" height="35.79597023053186" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-146" value="Bulk" style="rhombus;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-142" vertex="1">
+          <mxGeometry x="46.075949367088604" y="77.5579354994857" width="46.075949367088604" height="47.72796030737581" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-147" value="" style="group;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" connectable="0" vertex="1">
+          <mxGeometry x="441.0126582278481" y="86.2261753494282" width="78.9873417721519" height="125.2858958068615" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-148" value="Delete(by id)" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-147" vertex="1">
+          <mxGeometry width="72.9113924050633" height="35.79597023053186" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-149" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-152" target="h5jxzjJno4I67oUQHNnI-153" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-150" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-152" target="h5jxzjJno4I67oUQHNnI-158" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-151" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-152" target="h5jxzjJno4I67oUQHNnI-159" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-152" value="ITEM_Tags" style="ellipse;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" vertex="1">
+          <mxGeometry x="13.164556962025317" y="447.34434561626426" width="78.9873417721519" height="66.32782719186785" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-153" value="AddItemTag" style="whiteSpace=wrap;html=1;rounded=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" vertex="1">
+          <mxGeometry x="13.164556962025317" y="535.7814485387547" width="78.9873417721519" height="44.218551461245234" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-154" value="DONE" style="rhombus;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" vertex="1">
+          <mxGeometry x="283.03797468354423" y="292.57801173836754" width="40.316455696202524" height="47.72796030737581" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-155" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.62;entryY=0.081;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-145" target="h5jxzjJno4I67oUQHNnI-154" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-156" value="single" style="rhombus;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" vertex="1">
+          <mxGeometry x="256.7088607594937" y="233.61994312337387" width="40.316455696202524" height="47.72796030737581" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-157" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-145" target="h5jxzjJno4I67oUQHNnI-156" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="316.7721518987342" y="244.85145519453016" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-158" value="&lt;div style=&quot;font-size: 14px; line-height: 19px; white-space: pre;&quot;&gt;&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;ViewItemTagsName&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" vertex="1">
+          <mxGeometry x="144.81012658227849" y="469.4536213468869" width="131.64556962025316" height="44.218551461245234" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-159" value="&lt;div style=&quot;font-size: 14px; line-height: 19px; white-space: pre;&quot;&gt;&lt;div style=&quot;font-family: &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; line-height: 19px;&quot;&gt;&lt;span&gt;&lt;font style=&quot;color: rgb(8, 8, 8);&quot;&gt;DeleteItemTag&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" vertex="1">
+          <mxGeometry x="144.81012658227849" y="543.151207115629" width="121.11392405063289" height="36.84879288437103" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-160" value="" style="group;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" connectable="0" vertex="1">
+          <mxGeometry x="315.9493670886076" y="329.428208386277" width="92.15189873417721" height="125.2858958068615" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-161" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-160" source="h5jxzjJno4I67oUQHNnI-164" target="h5jxzjJno4I67oUQHNnI-165" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-162" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-160" source="h5jxzjJno4I67oUQHNnI-164" target="h5jxzjJno4I67oUQHNnI-165" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-163" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="h5jxzjJno4I67oUQHNnI-160" source="h5jxzjJno4I67oUQHNnI-164" target="h5jxzjJno4I67oUQHNnI-166" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-164" value="Update" style="whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-160" vertex="1">
+          <mxGeometry x="17.278481012658226" width="69.1139240506329" height="35.79597023053186" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-165" value="tag" style="rhombus;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-160" vertex="1">
+          <mxGeometry x="32.91139240506329" y="77.5579354994857" width="46.075949367088604" height="47.72796030737581" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-166" value="name" style="rhombus;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" parent="h5jxzjJno4I67oUQHNnI-160" vertex="1">
+          <mxGeometry x="-19.746835443037973" y="77.5579354994857" width="46.075949367088604" height="47.72796030737581" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-167" value="Done" style="rhombus;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;" parent="h5jxzjJno4I67oUQHNnI-174" vertex="1">
+          <mxGeometry x="414.6835443037974" y="404.59834210685545" width="46.075949367088604" height="47.72796030737581" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-168" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-164" target="h5jxzjJno4I67oUQHNnI-167" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-169" value="&lt;font style=&quot;color: rgb(162, 0, 37);&quot;&gt;RED&lt;/font&gt; : Not Implemented&lt;div&gt;&lt;font style=&quot;color: rgb(255, 242, 204);&quot;&gt;Yellow&lt;/font&gt;: Implemented&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#2D7600;fillColor=#60a917;fontColor=#ffffff;" parent="h5jxzjJno4I67oUQHNnI-174" vertex="1">
+          <mxGeometry x="3.2911392405063293" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-170" value="Desc" style="rhombus;whiteSpace=wrap;html=1;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" parent="h5jxzjJno4I67oUQHNnI-174" vertex="1">
+          <mxGeometry x="242.88607594936707" y="368.2064742542506" width="46.075949367088604" height="47.72796030737581" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-171" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-164" target="h5jxzjJno4I67oUQHNnI-170" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-172" value="map of fields" style="rhombus;fontFamily=-apple-system, BlinkMacSystemFont, Segoe UI Variable, Segoe UI, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;" parent="h5jxzjJno4I67oUQHNnI-174" vertex="1">
+          <mxGeometry x="463.22784810126575" y="336.7979669631512" width="56.77215189873417" height="58.95806861499365" as="geometry" />
+        </mxCell>
+        <mxCell id="h5jxzjJno4I67oUQHNnI-173" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="h5jxzjJno4I67oUQHNnI-174" source="h5jxzjJno4I67oUQHNnI-164" target="h5jxzjJno4I67oUQHNnI-172" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

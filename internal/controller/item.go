@@ -266,19 +266,40 @@ func (c *SQLTodoController) DeleteItem(item *model.Item) error {
 	return nil
 }
 
-func (c *SQLTodoController) DeleteItemTag(id string, TagName string) error {
-	stmtDel, err := c.db.Prepare("DELETE from item_tags where item_id = ? and tag_id = (SELECT id FROM tags where name = ?)")
-	if err != nil {
-		return fmt.Errorf("could not prepare delete tag statement: %v", err)
-	}
-	defer stmtDel.Close()
+func (c *SQLTodoController) DeleteItemTags(id string, tags []string) error {
+	args := make([]interface{}, 0)
+	args = append(args, id)
 
-	if _, err := stmtDel.Exec(id, TagName); err != nil {
+	params, placeHolders, _ := packTagParamsAndPlacholders(tags, true, len(tags))
+    q := fmt.Sprintf("DELETE from item_tags where item_id = ? and tag_id IN (SELECT id FROM tags where name IN (%s))", placeHolders)
+	stmtDel, err := c.db.Prepare(q)
+	if err != nil {
+		return fmt.Errorf("failed to Prepare DeleteItemTags statement: %v", err)
+	}
+	
+	defer stmtDel.Close()
+	
+	args = append(args, params...)
+	if _, err := stmtDel.Exec(args...); err != nil {
 		return fmt.Errorf("could not query delete tag statement: %v", err)
 	}
 	return nil
-
 }
+
+func (c *SQLTodoController) DeleteAllItemTags(id string) error {
+    q := "DELETE from item_tags where item_id = ?"
+	stmtDel, err := c.db.Prepare(q)
+	if err != nil {
+		return fmt.Errorf("failed to Prepare DeleteAllItemTags statement: %v", err)
+	}
+	
+	defer stmtDel.Close()
+	if _, err := stmtDel.Exec(id); err != nil {
+		return fmt.Errorf("could not query all delete tag statement: %v", err)
+	}
+	return nil
+}
+
 
 func (c *SQLTodoController) UpdateItem(item *model.Item, updates map[string]interface{}) error {
 	
