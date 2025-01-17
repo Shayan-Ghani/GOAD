@@ -107,8 +107,8 @@ func (c *CLI) PrintUsage() {
 	}
 
 	tagUse := map[string]string{
-		"view":   "tag view -i <id> [-done] [--all] [-tag <tagname>]",
-		"delete": "tag delete -i <id>",
+		"view":   "tag view --all=true",
+		"delete": "tag delete -n <name>",
 	}
 
 	fmt.Println("item : ...")
