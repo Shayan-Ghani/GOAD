@@ -16,28 +16,9 @@ type ItemCommand struct {
 }
 
 func NewItemCommand(ctrl *controller.SQLTodoController, action string) *ItemCommand {
-
-	descriptions := map[string]string{
-		"add":    "Add a new todo item",
-		"view":   "View a todo item(s)",
-		"delete": "Delete a todo item",
-		"update": "Update a todo item",
-		"done":   "update item status to done from pending",
-	}
-
-	usages := map[string]string{
-		"add":    "item add -n <name> -d <description> [-t tag1,tag2]",
-		"view":   "item view -i <id> [--done=true] [--all=true] [-t <items-with-these-tags,tag2>]",
-		"delete": "item delete -i <id> [-t <tags-to-delete> ] [--del-tags=true]",
-		"update": "item update -i <id> [-n <name>] [-d <description>] [-t <tag1,tag2>]",
-		"done":   "item done -i <id>",
-	}
-
 	return &ItemCommand{
 		BaseCommand: BaseCommand{
 			name:        action,
-			description: descriptions[action],
-			usage:       usages[action],
 			flags:       &Flags{},
 		},
 		controller: ctrl,
@@ -153,16 +134,25 @@ func (icmd *ItemCommand) handleUpdate() error {
 		icmd.controller.AddItemTag(icmd.flags.ID,formatter.SplitTags(icmd.flags.Tags))
 	}
 
-	updates := make(map[string]interface{})
-	
-	if isFlagDefined(icmd.flags.Name){
-		updates["name"] = icmd.flags.Name
+	if !isFlagDefined(icmd.flags.Description, icmd.flags.Name){
+		return err
 	}
-	if isFlagDefined(icmd.flags.Description){
-		updates["description"] = icmd.flags.Description
+
+
+	updates := make(map[string]interface{}, 2)
+	
+
+	flagUpdates := map[string]string{
+		"name":        icmd.flags.Name,
+		"description": icmd.flags.Description,
 	}
 	
-	
+	for key, value := range flagUpdates {
+		if isFlagDefined(value) {
+			updates[key] = value
+		}
+	}
+
 	err = icmd.controller.UpdateItem(&model.Item{
 		ID: icmd.flags.ID,
 	},updates)
