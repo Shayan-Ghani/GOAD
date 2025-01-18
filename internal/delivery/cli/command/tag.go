@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"gocasts/ToDoApp/internal/controller"
-	"gocasts/ToDoApp/internal/model"
 	"gocasts/ToDoApp/internal/pkg/response"
 	"gocasts/ToDoApp/internal/pkg/validation"
 )
@@ -65,8 +64,6 @@ func (tcmd *TagCommand) handleDelete() error {
 	if err = validation.ValidateFlagsDefinedStr([]string{"-n"}, tcmd.flags.Name); err != nil {
 		return fmt.Errorf("%w", err)
 	}
-	err = tcmd.controller.DeleteTag(&model.Tag{
-		Name: tcmd.flags.Name,
-	})
+	err = tcmd.controller.DeleteTag(tcmd.flags.Name)
 	return err
 }
