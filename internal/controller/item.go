@@ -67,23 +67,23 @@ func parseDatetime(datetime []uint8) (time.Time, error) {
 	return time.Time{}, nil
 }
 
-func (c *SQLTodoController) AddItem(item *model.Item, tags ...string) error {
+func (c *SQLTodoController) AddItem(name string, description string, tags ...string) error {
 	stmtIn, err := c.db.Prepare("INSERT INTO items (name, description, created_at ) VALUES (?,?,?)")
 	if err != nil {
 		return fmt.Errorf("failed to prepare insert statement: %v", err)
 	}
 	defer stmtIn.Close()
 
-	test, err := stmtIn.Exec(item.Name, item.Description, now.Now())
+	insert, err := stmtIn.Exec(name, description, now.Now())
 
 	if err != nil {
 		return fmt.Errorf("failed to insert item: %v", err)
 	}
 
 	if tags != nil {
-		id, err := test.LastInsertId()
+		id, err := insert.LastInsertId()
 		if err != nil {
-			return fmt.Errorf("eRRRRRRRRRR: %v", err)
+			return fmt.Errorf("couldn't get the last insert ID: %v", err)
 		}
 		if err = c.AddItemTag(strconv.Itoa(int(id)), tags); err != nil {
 			return fmt.Errorf(fmt.Sprintf("fail to add tags %s to item: ", tags), err)
@@ -105,13 +105,13 @@ func (c *SQLTodoController) AddItemTag(id string, tags []string) error {
 	var tagsToAdd []string
 	for _, tag := range tags {
 		if _, err := c.getTagID(tag); err != nil {
-			if err != sql.ErrNoRows {
+			if err == sql.ErrNoRows {
+				tagsToAdd = append(tagsToAdd, tag)
+			}else{
 				return err
 			}
-			tagsToAdd = append(tagsToAdd, tag)
 		}
 	}
-
 	if tagsToAdd != nil {
 		if err := c.AddTag(tagsToAdd); err != nil {
 			return err
@@ -120,7 +120,7 @@ func (c *SQLTodoController) AddItemTag(id string, tags []string) error {
 
 	params, placeHolders, _ := packTagParamsAndPlacholders(tags, true, len(tags))
 
-	q := fmt.Sprintf(`INSERT INTO item_tags (item_id, tag_id)
+	q := fmt.Sprintf(`INSERT IGNORE INTO item_tags (item_id, tag_id)
 SELECT i.id, t.id
 FROM items i
 JOIN tags t ON t.name IN (%s)
@@ -136,21 +136,22 @@ WHERE i.id = ?`, placeHolders)
 	return err
 }
 
-func (c *SQLTodoController) ViewItem(item *model.Item) (*model.Item, error) {
+func (c *SQLTodoController) ViewItem(id string) (*model.Item, error) {
 	stmt, err := c.db.Prepare("SELECT * FROM items WHERE id = ?")
 	if err != nil {
 		return nil, fmt.Errorf("failed to prepare statement: %v", err)
 	}
 	defer stmt.Close()
 
-	if err := scanItem(nil, item, stmt.QueryRow(item.ID)); err != nil {
+	item := &model.Item{}
+	if err := scanItem(nil, item, stmt.QueryRow(id)); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("item not found")
 		}
 		return nil, fmt.Errorf("failed to scan row: %v", err)
 	}
 
-	item.TagsNames, err = c.ViewItemTagsName(item.ID)
+	item.TagsNames, err = c.ViewItemTagsName(id)
 	if err != nil {
 		return nil, fmt.Errorf("getting item tags: %v", err)
 	}
@@ -237,7 +238,7 @@ func (c *SQLTodoController) ViewItemTagsName(id string) ([]string, error) {
 	return itemTags, nil
 }
 
-func (c *SQLTodoController) ViewItemsByTag(tag *model.Tag) ([]model.Item, error) {
+func (c *SQLTodoController) ViewItemsByTag(name string) ([]model.Item, error) {
 	q := `SELECT id, name 
 FROM items  
 WHERE id in (
@@ -248,11 +249,11 @@ WHERE id in (
 	WHERE name = '?'
 	)
 )`
-	fmt.Println(q, tag.Name)
+	fmt.Println(q, name)
 	return nil, nil
 }
 
-func (c *SQLTodoController) DeleteItem(item *model.Item) error {
+func (c *SQLTodoController) DeleteItem(id string) error {
 	stmtDel, err := c.db.Prepare("DELETE FROM items WHERE id = ?")
 	if err != nil {
 		return fmt.Errorf("could not prepare delete item statement: %v", err)
@@ -260,7 +261,7 @@ func (c *SQLTodoController) DeleteItem(item *model.Item) error {
 
 	defer stmtDel.Close()
 
-	if _, err := stmtDel.Exec(item.ID); err != nil {
+	if _, err := stmtDel.Exec(id); err != nil {
 		return fmt.Errorf("could not query delete item statement: %v", err)
 	}
 	return nil
@@ -301,7 +302,7 @@ func (c *SQLTodoController) DeleteAllItemTags(id string) error {
 }
 
 
-func (c *SQLTodoController) UpdateItem(item *model.Item, updates map[string]interface{}) error {
+func (c *SQLTodoController) UpdateItem(id string, updates map[string]interface{}) error {
 	
 	var setFields []string
 	var args []interface{}
@@ -312,7 +313,7 @@ func (c *SQLTodoController) UpdateItem(item *model.Item, updates map[string]inte
 	}
 
 	
-	args = append(args, item.ID)
+	args = append(args, id)
 
 	query := fmt.Sprintf("UPDATE items SET %s WHERE id = ?", strings.Join(setFields, ", "))
 
@@ -337,8 +338,3 @@ func (c *SQLTodoController) UpdateItemDone(id string) error {
 	_, err = stmt.Exec(id)
 	return err
 }
-
-// func (c *SQLTodoController) UpdateItemName(id string, name string) error {
-
-// 	return nil
-// }

@@ -18,8 +18,8 @@ type ItemCommand struct {
 func NewItemCommand(ctrl *controller.SQLTodoController, action string) *ItemCommand {
 	return &ItemCommand{
 		BaseCommand: BaseCommand{
-			name:        action,
-			flags:       &Flags{},
+			name:  action,
+			flags: &Flags{},
 		},
 		controller: ctrl,
 	}
@@ -60,7 +60,7 @@ func (icmd *ItemCommand) parseFlags(args []string) error {
 	fs.BoolVar(&icmd.flags.DelTags, "del-tags", false, "when set to ture, deletes all tags of the item")
 
 	err := fs.Parse(args[2:])
-	if args[1] == "--help"{
+	if args[1] == "--help" {
 		fs.PrintDefaults()
 	}
 	return err
@@ -69,7 +69,7 @@ func (icmd *ItemCommand) parseFlags(args []string) error {
 func (icmd *ItemCommand) handleAdd() error {
 	var err error
 
-	if err = validation.ValidateFlagsDefinedStr([]string{"-n", "-d"},icmd.flags.Name, icmd.flags.Description); err != nil {
+	if err = validation.ValidateFlagsDefinedStr([]string{"-n", "-d"}, icmd.flags.Name, icmd.flags.Description); err != nil {
 		return fmt.Errorf("%v", err)
 	}
 	var tags []string
@@ -77,10 +77,7 @@ func (icmd *ItemCommand) handleAdd() error {
 	if isFlagDefined(icmd.flags.Tags) {
 		tags = formatter.SplitTags(icmd.flags.Tags)
 	}
-	err = icmd.controller.AddItem(&model.Item{
-		Name:        icmd.flags.Name,
-		Description: icmd.flags.Description,
-	}, tags...)
+	err = icmd.controller.AddItem(icmd.flags.Name, icmd.flags.Description, tags...)
 
 	return err
 
@@ -89,7 +86,7 @@ func (icmd *ItemCommand) handleAdd() error {
 // TODO: add single item done view
 func (icmd *ItemCommand) handleView() error {
 	var err error
-	if icmd.flags.All{
+	if icmd.flags.All {
 		var items []model.Item
 		if icmd.flags.Done {
 			items, err = icmd.controller.ViewItemsDone()
@@ -106,14 +103,12 @@ func (icmd *ItemCommand) handleView() error {
 		return nil
 	}
 
-	if err = validation.ValidateFlagsDefinedStr([]string{"-i"},icmd.flags.ID); err != nil {
+	if err = validation.ValidateFlagsDefinedStr([]string{"-i"}, icmd.flags.ID); err != nil {
 		return fmt.Errorf("%w", err)
 	}
 
 	var item *model.Item
-	item, err = icmd.controller.ViewItem(&model.Item{
-		ID: icmd.flags.ID,
-	})
+	item, err = icmd.controller.ViewItem(icmd.flags.ID)
 	if err != nil {
 		return err
 	}
@@ -126,36 +121,32 @@ func (icmd *ItemCommand) handleView() error {
 func (icmd *ItemCommand) handleUpdate() error {
 	var err error
 
-	if err = validation.ValidateFlagsDefinedStr([]string{"-i"},icmd.flags.ID); err != nil {
+	if err = validation.ValidateFlagsDefinedStr([]string{"-i"}, icmd.flags.ID); err != nil {
 		return fmt.Errorf("%w", err)
 	}
 
 	if isFlagDefined(icmd.flags.Tags) {
-		icmd.controller.AddItemTag(icmd.flags.ID,formatter.SplitTags(icmd.flags.Tags))
+		icmd.controller.AddItemTag(icmd.flags.ID, formatter.SplitTags(icmd.flags.Tags))
 	}
 
-	if !isFlagDefined(icmd.flags.Description, icmd.flags.Name){
+	if !isFlagDefined(icmd.flags.Description, icmd.flags.Name) {
 		return err
 	}
 
-
 	updates := make(map[string]interface{}, 2)
-	
 
 	flagUpdates := map[string]string{
 		"name":        icmd.flags.Name,
 		"description": icmd.flags.Description,
 	}
-	
+
 	for key, value := range flagUpdates {
 		if isFlagDefined(value) {
 			updates[key] = value
 		}
 	}
 
-	err = icmd.controller.UpdateItem(&model.Item{
-		ID: icmd.flags.ID,
-	},updates)
+	err = icmd.controller.UpdateItem(icmd.flags.ID, updates)
 
 	return err
 }
@@ -179,24 +170,21 @@ func (icmd *ItemCommand) handleDelete() error {
 		return fmt.Errorf("%w", err)
 	}
 
-
 	if isFlagDefined(icmd.flags.Tags) && icmd.flags.DelTags {
 		return validation.New("argument", "Can't use a combinatio of --del-tags and -t")
 	}
 
 	if isFlagDefined(icmd.flags.Tags) {
-		err = icmd.controller.DeleteItemTags(icmd.flags.ID,formatter.SplitTags(icmd.flags.Tags))
-		return err
-	}
-	
-	if icmd.flags.DelTags {
-		err = icmd.controller.DeleteAllItemTags(icmd.flags.ID)	
+		err = icmd.controller.DeleteItemTags(icmd.flags.ID, formatter.SplitTags(icmd.flags.Tags))
 		return err
 	}
 
-	err = icmd.controller.DeleteItem(&model.Item{
-		ID: icmd.flags.ID,
-	})
+	if icmd.flags.DelTags {
+		err = icmd.controller.DeleteAllItemTags(icmd.flags.ID)
+		return err
+	}
+
+	err = icmd.controller.DeleteItem(icmd.flags.ID)
 
 	return err
 }

@@ -32,7 +32,7 @@ func (c *SQLTodoController) AddTag(tags []string) error {
 
 	params, placeHolders, _ := packTagParamsAndPlacholders(tags, false, len(tags))
 
-	q := fmt.Sprintf("INSERT IGNORE INTO tags (name, created_at) VALUES %s", placeHolders)
+	q := fmt.Sprintf("INSERT INTO tags (name, created_at) VALUES %s", placeHolders)
 
 	stmtIns, err := c.db.Prepare(q)
 	if err != nil {
@@ -44,7 +44,7 @@ func (c *SQLTodoController) AddTag(tags []string) error {
 	return err
 }
 
-func (c *SQLTodoController) AddTagInto(tag *model.Tag) error {
+func (c *SQLTodoController) AddTagInto(name string) error {
 	q := "INSERT IGNORE INTO tags (name,created_at) VALUES (?, ?)"
 	stmtIn, err := c.db.Prepare(q)
 	if err != nil {
@@ -52,12 +52,12 @@ func (c *SQLTodoController) AddTagInto(tag *model.Tag) error {
 	}
 	defer stmtIn.Close()
 
-	_, err = stmtIn.Exec(tag.Name)
+	_, err = stmtIn.Exec(name)
 
 	return err
 }
 
-func (c *SQLTodoController) ViewTags(tag *model.Tag) ([]model.Tag, error) {
+func (c *SQLTodoController) ViewTags() ([]model.Tag, error) {
 	return nil, nil
 }
 
@@ -74,14 +74,14 @@ func (c *SQLTodoController) getTagID(name string) (string, error) {
 	return id, err
 }
 
-func (c *SQLTodoController) DeleteTag(tag *model.Tag) error {
+func (c *SQLTodoController) DeleteTag(name string) error {
 	stmtDel, err := c.db.Prepare("DELETE from tags where name = ?")
 	if err != nil {
 		return fmt.Errorf("could not prepare delete tag statement: %v", err)
 	}
 	defer stmtDel.Close()
 
-	if _, err := stmtDel.Exec(tag.Name); err != nil {
+	if _, err := stmtDel.Exec(name); err != nil {
 		return fmt.Errorf("could not query delete tag statement: %v", err)
 	}
 	return err
