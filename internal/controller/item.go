@@ -55,6 +55,25 @@ func scanItem(rows *sql.Rows, item *model.Item, row ...*sql.Row) error {
 	return err
 }
 
+func (c *SQLTodoController) processItemRows(rows *sql.Rows) (itemRows []model.Item, err error) {
+	for rows.Next() {
+		var item model.Item
+		if err = scanItem(rows, &item); err != nil {
+			return nil, fmt.Errorf("failed to scan row: %v", err)
+		}
+		item.TagsNames, err = c.ViewItemTagsName(item.ID)
+		if err != nil {
+			return nil, fmt.Errorf("getting item tags: %v", err)
+		}
+		itemRows = append(itemRows, item)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating rows: %v", err)
+	}
+	return itemRows, err
+}
+
 func parseDatetime(datetime []uint8) (time.Time, error) {
 
 	if len(datetime) > 0 {
@@ -177,25 +196,8 @@ func (c *SQLTodoController) ViewItems(query ...string) ([]model.Item, error) {
 	}
 	defer rows.Close()
 
-	var ItemRows []model.Item
-
-	for rows.Next() {
-		var item model.Item
-		if err = scanItem(rows, &item); err != nil {
-			return nil, fmt.Errorf("failed to scan row: %v", err)
-		}
-		item.TagsNames, err = c.ViewItemTagsName(item.ID)
-		if err != nil {
-			return nil, fmt.Errorf("getting item tags: %v", err)
-		}
-		ItemRows = append(ItemRows, item)
-	}
-
-	if err = rows.Err(); err != nil {
-		return nil, fmt.Errorf("error iterating rows: %v", err)
-	}
-
-	return ItemRows, nil
+	rws, err := c.processItemRows(rows)
+	return rws, err
 }
 
 func (c *SQLTodoController) ViewItemsDone() ([]model.Item, error) {
@@ -263,25 +265,8 @@ WHERE id IN (
 	}
 	defer rows.Close()
 
-	var ItemRows []model.Item
-
-	for rows.Next() {
-		var item model.Item
-		if err = scanItem(rows, &item); err != nil {
-			return nil, fmt.Errorf("failed to scan row: %v", err)
-		}
-		item.TagsNames, err = c.ViewItemTagsName(item.ID)
-		if err != nil {
-			return nil, fmt.Errorf("getting item tags: %v", err)
-		}
-		ItemRows = append(ItemRows, item)
-	}
-
-	if err = rows.Err(); err != nil {
-		return nil, fmt.Errorf("error iterating rows: %v", err)
-	}
-
-	return ItemRows, nil
+	rws, err := c.processItemRows(rows)
+	return rws, err
 }
 
 func (c *SQLTodoController) DeleteItem(id string) error {
