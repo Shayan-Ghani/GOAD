@@ -19,7 +19,7 @@ func NewCLI(controller *controller.SQLTodoController) *CLI {
 		commands:   make(map[string]command.Command),
 		validCommands: map[string][]string{
 			"item": {"add", "view", "delete", "update", "done", "--help"},
-			"tag":  {"add", "view", "delete", "--help"},
+			"tag":  {"view", "delete", "--help"},
 		},
 	}
 }
@@ -85,17 +85,17 @@ func (c *CLI) PrintUsage() {
 
 	itemDesc := map[string]string{
 		"--help": "see help for flags and options",
-		"add":    "Add a new todo item",
-		"view":   "View a todo item(s)",
-		"delete": "Delete a todo item",
-		"update": "Update a todo item",
+		"add":    "Add a new item",
+		"view":   "View an item(s), also use -t <tag-name> instead of -i(single)/--all to see items filtered by that tag name.",
+		"delete": "Delete an item or its tags with --del-tags",
+		"update": "Update an item",
 		"done":   "update item status to done from pending",
 	}
 
 	itemUse := map[string]string{
 		"--help": "see help for flags and options",
 		"add":    "item add -n <name> -d <description> [-t tag1,tag2]",
-		"view":   "item view -i <id> [--done=true] [--all=true] [-t <items-with-these-tags,tag2>]",
+		"view":   "item view [-i <id>] [--done=true] [--all=true] [-t <items-with-these-tags,tag2>]",
 		"delete": "item delete -i <id> [-t <tags-to-delete> ] [--del-tags=true]",
 		"update": "item update -i <id> [-n <name>] [-d <description>] [-t <tag1,tag2>]",
 		"done":   "item done -i <id>",

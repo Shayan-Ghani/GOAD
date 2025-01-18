@@ -86,8 +86,8 @@ func (icmd *ItemCommand) handleAdd() error {
 // TODO: add single item done view
 func (icmd *ItemCommand) handleView() error {
 	var err error
+	var items []model.Item
 	if icmd.flags.All {
-		var items []model.Item
 		if icmd.flags.Done {
 			items, err = icmd.controller.ViewItemsDone()
 			if err != nil {
@@ -98,6 +98,15 @@ func (icmd *ItemCommand) handleView() error {
 			if err != nil {
 				return err
 			}
+		}
+		response.TabWriter(items)
+		return nil
+	}
+
+	if isFlagDefined(icmd.flags.Tags) {
+		items, err = icmd.controller.ViewItemsByTag(formatter.SplitTags(icmd.flags.Tags))
+		if err != nil {
+			return err
 		}
 		response.TabWriter(items)
 		return nil
