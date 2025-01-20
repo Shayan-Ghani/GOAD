@@ -1,0 +1,4 @@
+internal/cmd/cli
+internal/cmd/test
+cli
+test
