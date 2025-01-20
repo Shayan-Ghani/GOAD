@@ -19,6 +19,11 @@ func NewSQLTodoController(db *sql.DB) *SQLTodoController {
 	return &SQLTodoController{db: db}
 }
 
+type queryTemplate struct {
+	condition string
+	args      []interface{}
+}
+
 func scanItem(rows *sql.Rows, item *model.Item, row ...*sql.Row) error {
 	var isDone []byte
 	var createdAt []uint8
@@ -156,7 +161,8 @@ WHERE i.id = ?`, placeHolders)
 }
 
 func (c *SQLTodoController) ViewItem(id string) (*model.Item, error) {
-	stmt, err := c.db.Prepare("SELECT * FROM items WHERE id = ?")
+	q := "SELECT * FROM items WHERE id = ?"
+	stmt, err := c.db.Prepare(q)
 	if err != nil {
 		return nil, fmt.Errorf("failed to prepare statement: %v", err)
 	}
@@ -178,30 +184,38 @@ func (c *SQLTodoController) ViewItem(id string) (*model.Item, error) {
 	return item, err
 }
 
-// TODO: chekOut for Security of variadic query parameter.
-func (c *SQLTodoController) ViewItems(query ...string) ([]model.Item, error) {
+func (c *SQLTodoController) ViewItems(templates ...queryTemplate) ([]model.Item, error) {
 	q := "SELECT * FROM items"
-	if query != nil {
-		q = query[0]
-	}
-	stmt, err := c.db.Prepare(q)
-	if err != nil {
-		return nil, fmt.Errorf("failed to prepare statement: %v", err)
-	}
-	defer stmt.Close()
+	var args []interface{}
 
-	rows, err := stmt.Query()
+	if len(templates) > 0 {
+		template := templates[0]
+		if template.condition != "" {
+			q += fmt.Sprintf(" WHERE %s", template.condition)
+			args = template.args
+		}
+	}
+
+	var rows *sql.Rows
+	var err error
+	if len(args) > 0 {
+		rows, err = c.db.Query(q, args...)
+	} else {
+		rows, err = c.db.Query(q)
+	}
 	if err != nil {
-		return nil, fmt.Errorf("failed to execute query: %v", err)
+		return nil, fmt.Errorf("failed to execute query: %w", err)
 	}
 	defer rows.Close()
 
-	rws, err := c.processItemRows(rows)
-	return rws, err
+	return c.processItemRows(rows)
 }
 
 func (c *SQLTodoController) ViewItemsDone() ([]model.Item, error) {
-	return c.ViewItems("SELECT * FROM items WHERE is_done = 1")
+	return c.ViewItems(queryTemplate{
+		condition: "is_done = ?",
+		args:      []interface{}{1},
+	})
 }
 
 func (c *SQLTodoController) ViewItemTagsName(id string) ([]string, error) {
@@ -264,9 +278,7 @@ WHERE id IN (
 		return nil, fmt.Errorf("failed to execute query: %v", err)
 	}
 	defer rows.Close()
-
-	rws, err := c.processItemRows(rows)
-	return rws, err
+	return c.processItemRows(rows)
 }
 
 func (c *SQLTodoController) DeleteItem(id string) error {
