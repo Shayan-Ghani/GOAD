@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"gocasts/ToDoApp/internal/controller"
-	"gocasts/ToDoApp/internal/model"
 	"gocasts/ToDoApp/internal/pkg/formatter"
 	"gocasts/ToDoApp/internal/pkg/response"
 	"gocasts/ToDoApp/internal/pkg/validation"
@@ -83,39 +82,34 @@ func (icmd *ItemCommand) handleAdd() error {
 
 }
 
-// TODO: add single item done view
+
+
 func (icmd *ItemCommand) handleView() error {
-	var err error
-	if icmd.flags.All {
-		var items []model.Item
-		if icmd.flags.Done {
-			items, err = icmd.controller.ViewItemsDone()
-			if err != nil {
-				return err
-			}
-		} else {
-			items, err = icmd.controller.ViewItems()
-			if err != nil {
-				return err
-			}
+	handleItems := func(items interface{}, err error) error {
+		if err != nil {
+			return err
 		}
 		response.TabWriter(items)
 		return nil
 	}
 
-	if err = validation.ValidateFlagsDefinedStr([]string{"-i"}, icmd.flags.ID); err != nil {
+	if icmd.flags.Done {
+		return handleItems(icmd.controller.ViewItemsDone())
+	}
+	if icmd.flags.All {
+		return handleItems(icmd.controller.ViewItems())
+	}
+	
+	if isFlagDefined(icmd.flags.Tags) {
+		tags := formatter.SplitTags(icmd.flags.Tags)
+		return handleItems(icmd.controller.ViewItemsByTag(tags))
+	}
+
+	if err := validation.ValidateFlagsDefinedStr([]string{"-i"}, icmd.flags.ID); err != nil {
 		return fmt.Errorf("%w", err)
 	}
 
-	var item *model.Item
-	item, err = icmd.controller.ViewItem(icmd.flags.ID)
-	if err != nil {
-		return err
-	}
-	response.TabWriter(item)
-
-	return nil
-
+	return handleItems(icmd.controller.ViewItem(icmd.flags.ID))
 }
 
 func (icmd *ItemCommand) handleUpdate() error {
@@ -130,7 +124,7 @@ func (icmd *ItemCommand) handleUpdate() error {
 	}
 
 	if !isFlagDefined(icmd.flags.Description, icmd.flags.Name) {
-		return err
+		return fmt.Errorf("description and name must be defined")
 	}
 
 	updates := make(map[string]interface{}, 2)
