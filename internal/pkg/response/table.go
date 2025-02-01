@@ -3,30 +3,36 @@ package response
 import (
 	"fmt"
 	"gocasts/ToDoApp/internal/model"
-	"gocasts/ToDoApp/internal/pkg/formatter"
+	"log"
 	"os"
 	"text/tabwriter"
 )
 
-func TabWriter(arg ...any) {
+func PrintTable(arg ...any) {
 	fmt.Println("The Game Begins.")
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', tabwriter.TabIndent)
 	fmt.Fprintln(w, "ID\tName\tDescription\tStatus\tTags\tCreated_At")
 	fmt.Fprintln(w, "--\t----\t-----------\t------\t----\t----")
-	
+
 	for _, argItem := range arg {
 		switch entity := argItem.(type) {
 		case []model.Item:
-			if len(entity) == 0 {
-				fmt.Println("No items found!")
-				continue
-			}
 			for _, item := range entity {
-				printItem(w, item)
+				i, err := NewItemRes(&item)
+				if err != nil {
+					log.Fatalln(err)
+				}
+				printItem(w, *i)
 			}
+
 		case *model.Item:
-			printItem(w, *entity)
+			i, err := NewItemRes(entity)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			printItem(w, *i)
+
 		case []model.Tag:
 			if len(entity) == 0 {
 				fmt.Println("No tag found!")
@@ -35,6 +41,7 @@ func TabWriter(arg ...any) {
 			for _, tag := range entity {
 				printTag(w, tag)
 			}
+
 		default:
 			fmt.Printf("TabWriter: unexpected type %T\n", argItem)
 		}
@@ -43,26 +50,20 @@ func TabWriter(arg ...any) {
 
 }
 
-func printItem(w *tabwriter.Writer, item model.Item) {
-	status, tags, createdAt, err := formatter.FormatItemRes(w, item)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
+func printItem(w *tabwriter.Writer, item ItemResponse) {
 	fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\n",
 		item.ID,
 		item.Name,
 		item.Description,
-		status,
-		tags,
-		createdAt,
+		item.IsDone,
+		item.TagsNames,
+		item.CreatedAt,
 	)
 }
 func printTag(w *tabwriter.Writer, tag model.Tag) {
 	fmt.Fprintln(w, "Name\tCreated_At")
 	fmt.Fprintln(w, "--\t------")
-	
+
 	fmt.Fprintf(w, "%s\t%s\n",
 		tag.Name,
 		tag.CreatedAt,
