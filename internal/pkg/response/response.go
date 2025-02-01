@@ -1,0 +1,69 @@
+package response
+
+import (
+	"fmt"
+	"gocasts/ToDoApp/internal/model"
+	"gocasts/ToDoApp/internal/pkg/formatter"
+	"time"
+)
+
+type ItemResponse struct {
+	model.Item
+	IsDone    string
+	TagsNames string
+	CreatedAt string
+}
+
+func NewItemRes(item *model.Item) (*ItemResponse, error) {
+	tags := formatter.JoinTags(item.TagsNames)
+	if tags == "" {
+		tags = "No tags"
+	}
+
+	status := "Pending"
+	if item.IsDone {
+		status = "Done"
+	}
+
+	localLocation, err := time.LoadLocation("Local")
+	if err != nil {
+		return nil, err
+	}
+	createdAtLocal := item.CreatedAt.In(localLocation)
+
+	return &ItemResponse{
+		Item:      *item,
+		IsDone:    status,
+		TagsNames: tags,
+		CreatedAt: createdAtLocal.Format("2006-01-02 15:04:05"),
+	}, nil
+}
+
+func Respond(format string, args ...any) {
+    if hasNoRecords(args) {
+        fmt.Println("**Found 0 Records!**")
+        return
+    }
+
+    if format == "table" {
+        PrintTable(args...)
+    } else {
+        PrintJson(args...)
+    }
+}
+
+func hasNoRecords(args []any) bool {
+    for _, arg := range args {
+        switch v := arg.(type) {
+        case []model.Item:
+            if len(v) == 0 {
+                return true
+            }
+        case []model.Tag:
+            if len(v) == 0 {
+                return true
+            }
+        }
+    }
+    return false
+}

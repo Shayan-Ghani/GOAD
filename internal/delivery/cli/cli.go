@@ -95,7 +95,7 @@ func (c *CLI) PrintUsage() {
 	itemUse := map[string]string{
 		"--help": "see help for flags and options",
 		"add":    "item add -n <name> -d <description> [-t tag1,tag2]",
-		"view":   "item view [-i <id>] [--done=true] [--all=true] [-t <items-with-these-tags,tag2>]",
+		"view":   "item view [-i <id>] [--done=true] [--all=true] [-t <items-with-these-tags,tag2>] [--format=json/table]",
 		"delete": "item delete -i <id> [-t <tags-to-delete> ] [--del-tags=true]",
 		"update": "item update -i <id> [-n <name>] [-d <description>] [-t <tag1,tag2>]",
 		"done":   "item done -i <id>",
