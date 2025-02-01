@@ -43,11 +43,13 @@ func (tcmd *TagCommand) parseFlags(args []string) error {
 	fs := flag.NewFlagSet(resource, flag.ExitOnError)
 
 	fs.StringVar(&tcmd.flags.Name, "n", "", fmt.Sprintf("%s name", resource))
+	fs.StringVar(&tcmd.flags.Format, "format", "table", fmt.Sprintf("%s output format", resource))
 
 	err := fs.Parse(args[2:])
 	if args[1] == "--help"{
 		fs.PrintDefaults()
 	}
+
 	return err
 }
 
@@ -56,7 +58,8 @@ func (tcmd *TagCommand) handleView() error {
 	if err != nil {
 		return err
 	}
-	response.TabWriter(tags)
+	response.Respond(tcmd.flags.Format, tags)
+
 	return err
 }
 func (tcmd *TagCommand) handleDelete() error {
@@ -65,5 +68,6 @@ func (tcmd *TagCommand) handleDelete() error {
 		return fmt.Errorf("%w", err)
 	}
 	err = tcmd.controller.DeleteTag(tcmd.flags.Name)
+
 	return err
 }

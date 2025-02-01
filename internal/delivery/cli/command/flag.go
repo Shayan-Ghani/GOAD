@@ -15,6 +15,7 @@ type Flags struct {
 	Description string
 	Tags        string
 	Short       string
+	Format      string
 	All         bool
 	Done        bool
 	DelTags     bool

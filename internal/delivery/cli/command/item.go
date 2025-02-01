@@ -54,6 +54,7 @@ func (icmd *ItemCommand) parseFlags(args []string) error {
 	fs.StringVar(&icmd.flags.Description, "d", "", "item description")
 	fs.StringVar(&icmd.flags.Tags, "t", "", "item tags to add/delete or filter view by.")
 	fs.StringVar(&icmd.flags.Short, "short", "", "item short view (no tags)")
+	fs.StringVar(&icmd.flags.Format, "format", "table", fmt.Sprintf("%s output format", resource))
 	fs.BoolVar(&icmd.flags.All, "all", false, fmt.Sprintf("when set to true, view all %s references (bulk)", resource))
 	fs.BoolVar(&icmd.flags.Done, "done", false, "when set to true, change the status of an item to done")
 	fs.BoolVar(&icmd.flags.DelTags, "del-tags", false, "when set to ture, deletes all tags of the item")
@@ -89,7 +90,7 @@ func (icmd *ItemCommand) handleView() error {
 		if err != nil {
 			return err
 		}
-		response.TabWriter(items)
+		response.Respond(icmd.flags.Format, items)
 		return nil
 	}
 
