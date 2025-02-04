@@ -2,20 +2,20 @@ package cli
 
 import (
 	"fmt"
-	"gocasts/ToDoApp/internal/controller"
+	"gocasts/ToDoApp/internal/repository"
 	"gocasts/ToDoApp/internal/delivery/cli/command"
 	"gocasts/ToDoApp/internal/pkg/validation"
 )
 
 type CLI struct {
-	controller    *controller.SQLTodoController
+	repo    repository.Repository
 	commands      map[string]command.Command
 	validCommands map[string][]string
 }
 
-func NewCLI(controller *controller.SQLTodoController) *CLI {
+func NewCLI(repo repository.Repository) *CLI {
 	return &CLI{
-		controller: controller,
+		repo: repo,
 		commands:   make(map[string]command.Command),
 		validCommands: map[string][]string{
 			"item": {"add", "view", "delete", "update", "done", "--help"},
@@ -35,9 +35,9 @@ func (c *CLI) registerCommands(resource string, action string) {
 
 	switch resource {
 	case "item":
-		c.commands[resource] = command.NewItemCommand(c.controller, action)
+		c.commands[resource] = command.NewItemCommand(c.repo, action)
 	case "tag":
-		c.commands[resource] = command.NewTagCommand(c.controller, action)
+		c.commands[resource] = command.NewTagCommand(c.repo, action)
 	}
 
 }

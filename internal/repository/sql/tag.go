@@ -1,4 +1,4 @@
-package controller
+package sqlrepository
 
 import (
 	"fmt"
@@ -25,7 +25,7 @@ func packTagParamsAndPlacholders(tags []string, itemTag bool, tagCount int) ([]i
 	return params, strings.Join(placeHolders, ","), placeHolders
 }
 
-func (c *SQLTodoController) AddTag(tags []string) error {
+func (c *SQLRepository) AddTag(tags []string) error {
 	if err := validation.ValidateTagNames(tags); err != nil {
 		return fmt.Errorf("validation failed: %w", err)
 	}
@@ -44,7 +44,7 @@ func (c *SQLTodoController) AddTag(tags []string) error {
 	return err
 }
 
-func (c *SQLTodoController) AddTagInto(name string) error {
+func (c *SQLRepository) AddTagInto(name string) error {
 	q := "INSERT IGNORE INTO tags (name,created_at) VALUES (?, ?)"
 	stmtIn, err := c.db.Prepare(q)
 	if err != nil {
@@ -57,11 +57,11 @@ func (c *SQLTodoController) AddTagInto(name string) error {
 	return err
 }
 
-func (c *SQLTodoController) ViewTags() ([]model.Tag, error) {
+func (c *SQLRepository) GetTags() ([]model.Tag, error) {
 	return nil, nil
 }
 
-func (c *SQLTodoController) getTagID(name string) (string, error) {
+func (c *SQLRepository) getTagID(name string) (string, error) {
 	var id string
 
 	stmt, err := c.db.Prepare("SELECT id FROM tags WHERE name = ?")
@@ -74,7 +74,7 @@ func (c *SQLTodoController) getTagID(name string) (string, error) {
 	return id, err
 }
 
-func (c *SQLTodoController) DeleteTag(name string) error {
+func (c *SQLRepository) DeleteTag(name string) error {
 	stmtDel, err := c.db.Prepare("DELETE from tags where name = ?")
 	if err != nil {
 		return fmt.Errorf("could not prepare delete tag statement: %v", err)

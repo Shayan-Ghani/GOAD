@@ -3,7 +3,7 @@ package command
 import (
 	"flag"
 	"fmt"
-	"gocasts/ToDoApp/internal/controller"
+	"gocasts/ToDoApp/internal/repository"
 	"gocasts/ToDoApp/internal/pkg/formatter"
 	"gocasts/ToDoApp/internal/pkg/response"
 	"gocasts/ToDoApp/internal/pkg/validation"
@@ -12,16 +12,16 @@ import (
 
 type ItemCommand struct {
 	BaseCommand
-	controller *controller.SQLTodoController
+	repo repository.Repository
 }
 
-func NewItemCommand(ctrl *controller.SQLTodoController, action string) *ItemCommand {
+func NewItemCommand(repo repository.Repository, action string) *ItemCommand {
 	return &ItemCommand{
 		BaseCommand: BaseCommand{
 			name:  action,
 			flags: &Flags{},
 		},
-		controller: ctrl,
+		repo: repo,
 	}
 }
 
@@ -90,7 +90,7 @@ func (icmd *ItemCommand) handleAdd() error {
 		}
 	}
 
-	err = icmd.controller.AddItem(icmd.flags.Name, icmd.flags.Description, t, tags...)
+	err = icmd.repo.AddItem(icmd.flags.Name, icmd.flags.Description, t, tags...)
 
 	return err
 
@@ -106,22 +106,22 @@ func (icmd *ItemCommand) handleView() error {
 	}
 
 	if icmd.flags.Done {
-		return handleItems(icmd.controller.ViewItemsDone())
+		return handleItems(icmd.repo.GetItemsDone())
 	}
 	if icmd.flags.All {
-		return handleItems(icmd.controller.ViewItems())
+		return handleItems(icmd.repo.GetItems())
 	}
 
 	if isFlagDefined(icmd.flags.Tags) {
 		tags := formatter.SplitTags(icmd.flags.Tags)
-		return handleItems(icmd.controller.ViewItemsByTag(tags))
+		return handleItems(icmd.repo.GetItemByTag(tags))
 	}
 
 	if err := validation.ValidateFlagsDefinedStr([]string{"-i"}, icmd.flags.ID); err != nil {
 		return fmt.Errorf("%w", err)
 	}
 
-	return handleItems(icmd.controller.ViewItem(icmd.flags.ID))
+	return handleItems(icmd.repo.GetItem(icmd.flags.ID))
 }
 
 func (icmd *ItemCommand) handleUpdate() error {
@@ -132,7 +132,7 @@ func (icmd *ItemCommand) handleUpdate() error {
 	}
 
 	if isFlagDefined(icmd.flags.Tags) {
-		icmd.controller.AddItemTag(icmd.flags.ID, formatter.SplitTags(icmd.flags.Tags))
+		icmd.repo.AddItemTag(icmd.flags.ID, formatter.SplitTags(icmd.flags.Tags))
 	}
 
 	if !isFlagDefined(icmd.flags.Description, icmd.flags.Name) {
@@ -160,7 +160,7 @@ func (icmd *ItemCommand) handleUpdate() error {
 		updates[key] = value
 	}
 
-	err = icmd.controller.UpdateItem(icmd.flags.ID, updates)
+	err = icmd.repo.UpdateItem(icmd.flags.ID, updates)
 
 	return err
 }
@@ -172,7 +172,7 @@ func (icmd *ItemCommand) handleDone() error {
 		return fmt.Errorf("%w", err)
 	}
 
-	err = icmd.controller.UpdateItemDone(icmd.flags.ID)
+	err = icmd.repo.UpdateItemStatus(icmd.flags.ID)
 
 	return err
 }
@@ -189,16 +189,16 @@ func (icmd *ItemCommand) handleDelete() error {
 	}
 
 	if isFlagDefined(icmd.flags.Tags) {
-		err = icmd.controller.DeleteItemTags(icmd.flags.ID, formatter.SplitTags(icmd.flags.Tags))
+		err = icmd.repo.DeleteItemTags(icmd.flags.ID, formatter.SplitTags(icmd.flags.Tags))
 		return err
 	}
 
 	if icmd.flags.DelTags {
-		err = icmd.controller.DeleteAllItemTags(icmd.flags.ID)
+		err = icmd.repo.DeleteAllItemTags(icmd.flags.ID)
 		return err
 	}
 
-	err = icmd.controller.DeleteItem(icmd.flags.ID)
+	err = icmd.repo.DeleteItem(icmd.flags.ID)
 
 	return err
 }
