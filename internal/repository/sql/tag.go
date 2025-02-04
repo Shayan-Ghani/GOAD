@@ -2,10 +2,11 @@ package sqlrepository
 
 import (
 	"fmt"
-	"gocasts/ToDoApp/internal/model"
-	now "gocasts/ToDoApp/pkg/time"
-	"gocasts/ToDoApp/pkg/validation"
 	"strings"
+
+	"github.com/Shayan-Ghani/GOAD/internal/model"
+	now "github.com/Shayan-Ghani/GOAD/pkg/time"
+	"github.com/Shayan-Ghani/GOAD/pkg/validation"
 )
 
 func packTagParamsAndPlacholders(tags []string, itemTag bool, tagCount int) ([]interface{}, string, []string) {

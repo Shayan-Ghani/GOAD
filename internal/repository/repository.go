@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"gocasts/ToDoApp/internal/model"
 	"time"
+
+	"github.com/Shayan-Ghani/GOAD/internal/model"
 )
 
 type QueryTemplate struct {

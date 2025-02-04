@@ -2,10 +2,11 @@ package response
 
 import (
 	"fmt"
-	"gocasts/ToDoApp/internal/model"
 	"log"
 	"os"
 	"text/tabwriter"
+
+	"github.com/Shayan-Ghani/GOAD/internal/model"
 )
 
 func PrintTable(arg ...any) {

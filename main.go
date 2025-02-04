@@ -2,17 +2,19 @@ package main
 
 import (
 	"database/sql"
-	"gocasts/ToDoApp/internal/constant"
-	"gocasts/ToDoApp/internal/delivery/cli"
-	sqlrepo "gocasts/ToDoApp/internal/repository/sql"
 	"log"
 	"os"
+
+	"github.com/Shayan-Ghani/GOAD/config"
+	"github.com/Shayan-Ghani/GOAD/internal/delivery/cli"
+	sqlrepo "github.com/Shayan-Ghani/GOAD/internal/repository/sql"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	driver, err := sql.Open("mysql", constant.DefaultDSN)
+
+	driver, err := sql.Open("mysql", config.DefaultDSN)
 
 	if err != nil {
 		log.Fatal(err)
@@ -27,9 +29,8 @@ func main() {
 
 	cli := cli.NewCLI(db)
 
-
 	if err := cli.Exec(os.Args[1:]); err != nil {
 		log.Fatalf("%v", err)
 	}
-	
+
 }

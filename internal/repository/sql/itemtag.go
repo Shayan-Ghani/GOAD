@@ -3,7 +3,8 @@ package sqlrepository
 import (
 	"database/sql"
 	"fmt"
-	"gocasts/ToDoApp/pkg/validation"
+
+	"github.com/Shayan-Ghani/GOAD/pkg/validation"
 )
 
 func (c *SQLRepository) AddItemTag(id string, tags []string) error {
