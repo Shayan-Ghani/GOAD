@@ -43,7 +43,7 @@ func (dm *DBManager) MigrateUp() error {
 }
 
 func (dm *DBManager) MigrateDown() error {
-	if err := dm.migrate.Down(); err != nil && err != migrate.ErrNoChange {
+	if err := dm.migrate.Steps(-1); err != nil && err != migrate.ErrNoChange {
 		return fmt.Errorf("could not rollback migrations: %v", err)
 	}
 	return nil

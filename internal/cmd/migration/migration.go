@@ -1,8 +1,9 @@
-package cmd
+package main
 
 import (
 	"database/sql"
 	"fmt"
+	"gocasts/ToDoApp/internal/constant"
 	"gocasts/ToDoApp/internal/db"
 	"log"
 	"os"
@@ -10,12 +11,8 @@ import (
 	"runtime"
 )
 
-const (
-	dsn = "root:root@tcp(localhost:3306)/todo_dev?multiStatements=true"
-)
-
-func Migrate() {
-	driver, err := sql.Open("mysql", dsn)
+func main() {
+	driver, err := sql.Open("mysql", constant.DefaultDSN)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -29,7 +26,7 @@ func Migrate() {
 	
 	
 	currentDir := filepath.Dir(b)
-	migrationPath := filepath.Join(currentDir, "internal", "db", "migrations")
+	migrationPath := filepath.Join(currentDir, "..", "..", "db", "migrations")
 	
 	dbManager, err := db.NewDBManager(driver, migrationPath)
 	if err != nil {

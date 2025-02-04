@@ -12,8 +12,8 @@ func PrintTable(arg ...any) {
 	fmt.Println("The Game Begins.")
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', tabwriter.TabIndent)
-	fmt.Fprintln(w, "ID\tName\tDescription\tStatus\tTags\tCreated_At")
-	fmt.Fprintln(w, "--\t----\t-----------\t------\t----\t----")
+	fmt.Fprintln(w, "ID\tName\tDescription\tStatus\tDue_Date\tTags\tCreated_At")
+	fmt.Fprintln(w, "--\t----\t-----------\t------\t----\t------\t------")
 
 	for _, argItem := range arg {
 		switch entity := argItem.(type) {
@@ -51,11 +51,12 @@ func PrintTable(arg ...any) {
 }
 
 func printItem(w *tabwriter.Writer, item ItemResponse) {
-	fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\n",
+	fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
 		item.ID,
 		item.Name,
 		item.Description,
 		item.IsDone,
+		item.DueDate,
 		item.TagsNames,
 		item.CreatedAt,
 	)

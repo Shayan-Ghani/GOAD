@@ -28,12 +28,14 @@ func scanItem(rows *sql.Rows, item *model.Item, row ...*sql.Row) error {
 	var isDone []byte
 	var createdAt []uint8
 	var modifiedAt []uint8
+	var dueDate []uint8
 
 	fields := []interface{}{
 		&item.ID,
 		&item.Name,
 		&item.Description,
 		&isDone,
+		&dueDate,
 		&createdAt,
 		&modifiedAt,
 	}
@@ -52,11 +54,17 @@ func scanItem(rows *sql.Rows, item *model.Item, row ...*sql.Row) error {
 	item.IsDone = len(isDone) > 0 && isDone[0] == 1
 
 	item.CreatedAt, err = parseDatetime(createdAt)
-
 	if err != nil {
 		return fmt.Errorf("parsing CreatedAt: %v", err)
 	}
+
 	item.ModifiedAt, err = parseDatetime(modifiedAt)
+	if err != nil {
+		return fmt.Errorf("parsing CreatedAt: %v", err)
+	}
+
+	item.DueDate, err = parseDatetime(dueDate)
+
 	return err
 }
 
@@ -91,19 +99,25 @@ func parseDatetime(datetime []uint8) (time.Time, error) {
 	return time.Time{}, nil
 }
 
-func (c *SQLTodoController) AddItem(name string, description string, tags ...string) error {
-	stmtIn, err := c.db.Prepare("INSERT INTO items (name, description, created_at ) VALUES (?,?,?)")
-	if err != nil {
-		return fmt.Errorf("failed to prepare insert statement: %v", err)
-	}
-	defer stmtIn.Close()
+func (c *SQLTodoController) AddItem(name string, description string, dueDate time.Time, tags ...string) error {
+	q := "INSERT INTO items (name, description, created_at) VALUES (?, ?, ?)"
+	args := []interface{}{name, description, now.Now()}
 
-	insert, err := stmtIn.Exec(name, description, now.Now())
-
-	if err != nil {
-		return fmt.Errorf("failed to insert item: %v", err)
+	if !dueDate.IsZero() {
+		q = "INSERT INTO items (name, description, created_at, due_date) VALUES (?, ?, ?, ?)"
+		args = append(args, dueDate)
 	}
 
+	stmt, err := c.db.Prepare(q)
+	if err != nil {
+		return fmt.Errorf("failed to prepare insert statement: %w", err)
+	}
+	defer stmt.Close()
+
+	insert, err := stmt.Exec(args...)
+	if err != nil {
+		return fmt.Errorf("failed to insert item: %w", err)
+	}
 	if tags != nil {
 		id, err := insert.LastInsertId()
 		if err != nil {

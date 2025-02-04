@@ -32,7 +32,7 @@ func (c *SQLTodoController) AddTag(tags []string) error {
 
 	params, placeHolders, _ := packTagParamsAndPlacholders(tags, false, len(tags))
 
-	q := fmt.Sprintf("INSERT INTO tags (name, created_at) VALUES %s", placeHolders)
+	q := fmt.Sprintf("INSERT IGNORE INTO tags (name, created_at) VALUES %s", placeHolders)
 
 	stmtIns, err := c.db.Prepare(q)
 	if err != nil {

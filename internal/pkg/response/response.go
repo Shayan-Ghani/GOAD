@@ -11,6 +11,7 @@ type ItemResponse struct {
 	model.Item
 	IsDone    string
 	TagsNames string
+	DueDate string
 	CreatedAt string
 }
 
@@ -29,13 +30,21 @@ func NewItemRes(item *model.Item) (*ItemResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	createdAtLocal := item.CreatedAt.In(localLocation)
+	cLocal := item.CreatedAt.In(localLocation).Format("2006-01-02 15:04:05")
+
+	dLocal := item.DueDate.In(localLocation).Format("2006-01-02 15:04:05")
+
+	if item.DueDate.IsZero(){
+		dLocal = "Not Set"
+	}
+
 
 	return &ItemResponse{
 		Item:      *item,
 		IsDone:    status,
+		DueDate: dLocal,
 		TagsNames: tags,
-		CreatedAt: createdAtLocal.Format("2006-01-02 15:04:05"),
+		CreatedAt: cLocal,
 	}, nil
 }
 
