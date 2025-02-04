@@ -16,6 +16,7 @@ type Flags struct {
 	Tags        string
 	Short       string
 	Format      string
+	DueDate 	string
 	All         bool
 	Done        bool
 	DelTags     bool

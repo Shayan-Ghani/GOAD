@@ -9,15 +9,10 @@ type Item struct {
 	Name        string
 	Description string
 	IsDone      bool
+	DueDate  	time.Time
 	CreatedAt   time.Time
 	ModifiedAt  time.Time
 	TagsNames []string
-}
-
-type Tag struct {
-	ID    string
-	Name  string
-	CreatedAt time.Time
 }
 
 type TagItems struct {

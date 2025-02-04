@@ -7,6 +7,7 @@ import (
 	"gocasts/ToDoApp/internal/pkg/formatter"
 	"gocasts/ToDoApp/internal/pkg/response"
 	"gocasts/ToDoApp/internal/pkg/validation"
+	"time"
 )
 
 type ItemCommand struct {
@@ -55,6 +56,7 @@ func (icmd *ItemCommand) parseFlags(args []string) error {
 	fs.StringVar(&icmd.flags.Tags, "t", "", "item tags to add/delete or filter view by.")
 	fs.StringVar(&icmd.flags.Short, "short", "", "item short view (no tags)")
 	fs.StringVar(&icmd.flags.Format, "format", "table", fmt.Sprintf("%s output format", resource))
+	fs.StringVar(&icmd.flags.DueDate, "due-date", "", fmt.Sprintf("%s due date in 'year-month-day hour:minute:second' format.", resource))
 	fs.BoolVar(&icmd.flags.All, "all", false, fmt.Sprintf("when set to true, view all %s references (bulk)", resource))
 	fs.BoolVar(&icmd.flags.Done, "done", false, "when set to true, change the status of an item to done")
 	fs.BoolVar(&icmd.flags.DelTags, "del-tags", false, "when set to ture, deletes all tags of the item")
@@ -77,13 +79,22 @@ func (icmd *ItemCommand) handleAdd() error {
 	if isFlagDefined(icmd.flags.Tags) {
 		tags = formatter.SplitTags(icmd.flags.Tags)
 	}
-	err = icmd.controller.AddItem(icmd.flags.Name, icmd.flags.Description, tags...)
+
+	var t = time.Time{}
+
+	if isFlagDefined(icmd.flags.DueDate) {
+		t, err = formatter.StringToTime(icmd.flags.DueDate)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	err = icmd.controller.AddItem(icmd.flags.Name, icmd.flags.Description, t, tags...)
 
 	return err
 
 }
-
-
 
 func (icmd *ItemCommand) handleView() error {
 	handleItems := func(items interface{}, err error) error {
@@ -100,7 +111,7 @@ func (icmd *ItemCommand) handleView() error {
 	if icmd.flags.All {
 		return handleItems(icmd.controller.ViewItems())
 	}
-	
+
 	if isFlagDefined(icmd.flags.Tags) {
 		tags := formatter.SplitTags(icmd.flags.Tags)
 		return handleItems(icmd.controller.ViewItemsByTag(tags))
@@ -128,17 +139,25 @@ func (icmd *ItemCommand) handleUpdate() error {
 		return fmt.Errorf("description and name must be defined")
 	}
 
-	updates := make(map[string]interface{}, 2)
+	updates := make(map[string]interface{}, 3)
 
-	flagUpdates := map[string]string{
+	flagUpdates := map[string]interface{}{
 		"name":        icmd.flags.Name,
 		"description": icmd.flags.Description,
 	}
 
-	for key, value := range flagUpdates {
-		if isFlagDefined(value) {
-			updates[key] = value
+	if isFlagDefined(icmd.flags.DueDate) {
+		t, err := formatter.StringToTime(icmd.flags.DueDate)
+
+		if err != nil {
+			return err
 		}
+
+		flagUpdates["due_date"] = t
+	}
+
+	for key, value := range flagUpdates {
+		updates[key] = value
 	}
 
 	err = icmd.controller.UpdateItem(icmd.flags.ID, updates)
