@@ -2,19 +2,18 @@ package main
 
 import (
 	"database/sql"
+	"gocasts/ToDoApp/internal/constant"
 	"gocasts/ToDoApp/internal/controller"
 	"gocasts/ToDoApp/internal/delivery/cli"
 	"log"
 	"os"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
-const (
-	dsn = "root:root@tcp(localhost:3306)/todo_dev"
-)
-
 func main() {
-	driver, err := sql.Open("mysql", dsn)
+	driver, err := sql.Open("mysql", constant.DefaultDSN)
+
 	if err != nil {
 		log.Fatal(err)
 	}
