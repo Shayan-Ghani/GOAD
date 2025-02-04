@@ -1,0 +1,1 @@
+ALTER TABLE items ADD COLUMN `due_date` datetime(3) DEFAULT NULL AFTER `is_done`;
