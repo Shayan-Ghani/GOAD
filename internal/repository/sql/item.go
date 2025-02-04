@@ -3,12 +3,13 @@ package sqlrepository
 import (
 	"database/sql"
 	"fmt"
-	"gocasts/ToDoApp/internal/model"
-	"gocasts/ToDoApp/internal/repository"
-	now "gocasts/ToDoApp/pkg/time"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Shayan-Ghani/GOAD/internal/model"
+	"github.com/Shayan-Ghani/GOAD/internal/repository"
+	now "github.com/Shayan-Ghani/GOAD/pkg/time"
 )
 
 type SQLRepository struct {

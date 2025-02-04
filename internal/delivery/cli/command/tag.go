@@ -3,9 +3,9 @@ package command
 import (
 	"flag"
 	"fmt"
-	"gocasts/ToDoApp/internal/repository"
-	"gocasts/ToDoApp/pkg/response"
-	"gocasts/ToDoApp/pkg/validation"
+	"github.com/Shayan-Ghani/GOAD/internal/repository"
+	"github.com/Shayan-Ghani/GOAD/pkg/response"
+	"github.com/Shayan-Ghani/GOAD/pkg/validation"
 )
 
 type TagCommand struct {

@@ -2,21 +2,22 @@ package cli
 
 import (
 	"fmt"
-	"gocasts/ToDoApp/internal/repository"
-	"gocasts/ToDoApp/internal/delivery/cli/command"
-	"gocasts/ToDoApp/pkg/validation"
+
+	"github.com/Shayan-Ghani/GOAD/internal/delivery/cli/command"
+	"github.com/Shayan-Ghani/GOAD/internal/repository"
+	"github.com/Shayan-Ghani/GOAD/pkg/validation"
 )
 
 type CLI struct {
-	repo    repository.Repository
+	repo          repository.Repository
 	commands      map[string]command.Command
 	validCommands map[string][]string
 }
 
 func NewCLI(repo repository.Repository) *CLI {
 	return &CLI{
-		repo: repo,
-		commands:   make(map[string]command.Command),
+		repo:     repo,
+		commands: make(map[string]command.Command),
 		validCommands: map[string][]string{
 			"item": {"add", "view", "delete", "update", "done", "--help"},
 			"tag":  {"view", "delete", "--help"},
@@ -71,7 +72,7 @@ func (c *CLI) Exec(args []string) error {
 			c.PrintUsage()
 			return fmt.Errorf("%s %s command : %w", resource, action, err)
 		}
-	}else{
+	} else {
 		c.PrintUsage()
 		return nil
 	}

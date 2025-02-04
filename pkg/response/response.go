@@ -2,9 +2,10 @@ package response
 
 import (
 	"fmt"
-	"gocasts/ToDoApp/internal/model"
-	"gocasts/ToDoApp/pkg/formatter"
 	"time"
+
+	"github.com/Shayan-Ghani/GOAD/internal/model"
+	"github.com/Shayan-Ghani/GOAD/pkg/formatter"
 )
 
 type ItemResponse struct {
