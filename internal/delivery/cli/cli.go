@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"gocasts/ToDoApp/internal/repository"
 	"gocasts/ToDoApp/internal/delivery/cli/command"
-	"gocasts/ToDoApp/internal/pkg/validation"
+	"gocasts/ToDoApp/pkg/validation"
 )
 
 type CLI struct {

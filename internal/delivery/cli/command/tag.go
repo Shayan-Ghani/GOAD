@@ -4,8 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"gocasts/ToDoApp/internal/repository"
-	"gocasts/ToDoApp/internal/pkg/response"
-	"gocasts/ToDoApp/internal/pkg/validation"
+	"gocasts/ToDoApp/pkg/response"
+	"gocasts/ToDoApp/pkg/validation"
 )
 
 type TagCommand struct {

@@ -1,4 +1,4 @@
-internal/cmd/cli
-internal/cmd/test
+cmd/cli
+cmd/test
 cli
 test

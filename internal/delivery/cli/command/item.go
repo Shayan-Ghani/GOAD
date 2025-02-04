@@ -4,9 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"gocasts/ToDoApp/internal/repository"
-	"gocasts/ToDoApp/internal/pkg/formatter"
-	"gocasts/ToDoApp/internal/pkg/response"
-	"gocasts/ToDoApp/internal/pkg/validation"
+	"gocasts/ToDoApp/pkg/formatter"
+	"gocasts/ToDoApp/pkg/response"
+	"gocasts/ToDoApp/pkg/validation"
 	"time"
 )
 

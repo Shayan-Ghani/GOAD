@@ -3,9 +3,8 @@ package sqlrepository
 import (
 	"database/sql"
 	"fmt"
-	"gocasts/ToDoApp/internal/pkg/validation"
+	"gocasts/ToDoApp/pkg/validation"
 )
-
 
 func (c *SQLRepository) AddItemTag(id string, tags []string) error {
 	if err := validation.ValidateTagNames(tags); err != nil {
@@ -46,7 +45,6 @@ func (c *SQLRepository) AddItemTag(id string, tags []string) error {
 	return err
 }
 
-
 func (c *SQLRepository) GetItemTagsName(id string) ([]string, error) {
 	q := `SELECT name 
 	FROM tags where id in (
@@ -83,7 +81,6 @@ func (c *SQLRepository) GetItemTagsName(id string) ([]string, error) {
 	return itemTags, nil
 }
 
-
 func (c *SQLRepository) DeleteItemTags(id string, tags []string) error {
 	args := make([]interface{}, 0)
 	args = append(args, id)
@@ -103,7 +100,6 @@ func (c *SQLRepository) DeleteItemTags(id string, tags []string) error {
 	}
 	return nil
 }
-
 
 func (c *SQLRepository) DeleteAllItemTags(id string) error {
 	q := "DELETE from item_tags where item_id = ?"

@@ -3,8 +3,8 @@ package sqlrepository
 import (
 	"fmt"
 	"gocasts/ToDoApp/internal/model"
-	now "gocasts/ToDoApp/internal/pkg/time"
-	"gocasts/ToDoApp/internal/pkg/validation"
+	now "gocasts/ToDoApp/pkg/time"
+	"gocasts/ToDoApp/pkg/validation"
 	"strings"
 )
 
