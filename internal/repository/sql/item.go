@@ -1,30 +1,26 @@
-package controller
+package sqlrepository
 
 import (
 	"database/sql"
 	"fmt"
 	"gocasts/ToDoApp/internal/model"
-	now "gocasts/ToDoApp/internal/pkg/time"
-	"gocasts/ToDoApp/internal/pkg/validation"
+	"gocasts/ToDoApp/internal/repository"
+	now "gocasts/ToDoApp/pkg/time"
 	"strconv"
 	"strings"
 	"time"
 )
 
-type SQLTodoController struct {
+type SQLRepository struct {
 	db *sql.DB
 }
 
-func NewSQLTodoController(db *sql.DB) *SQLTodoController {
-	return &SQLTodoController{db: db}
-}
-
-type queryTemplate struct {
-	condition string
-	args      []interface{}
+func NewSQLRepo(db *sql.DB) *SQLRepository {
+	return &SQLRepository{db: db}
 }
 
 func scanItem(rows *sql.Rows, item *model.Item, row ...*sql.Row) error {
+
 	var isDone []byte
 	var createdAt []uint8
 	var modifiedAt []uint8
@@ -68,13 +64,13 @@ func scanItem(rows *sql.Rows, item *model.Item, row ...*sql.Row) error {
 	return err
 }
 
-func (c *SQLTodoController) processItemRows(rows *sql.Rows) (itemRows []model.Item, err error) {
+func (c *SQLRepository) processItemRows(rows *sql.Rows) (itemRows []model.Item, err error) {
 	for rows.Next() {
 		var item model.Item
 		if err = scanItem(rows, &item); err != nil {
 			return nil, fmt.Errorf("failed to scan row: %v", err)
 		}
-		item.TagsNames, err = c.ViewItemTagsName(item.ID)
+		item.TagsNames, err = c.GetItemTagsName(item.ID)
 		if err != nil {
 			return nil, fmt.Errorf("getting item tags: %v", err)
 		}
@@ -99,7 +95,7 @@ func parseDatetime(datetime []uint8) (time.Time, error) {
 	return time.Time{}, nil
 }
 
-func (c *SQLTodoController) AddItem(name string, description string, dueDate time.Time, tags ...string) error {
+func (c *SQLRepository) AddItem(name string, description string, dueDate time.Time, tags ...string) error {
 	q := "INSERT INTO items (name, description, created_at) VALUES (?, ?, ?)"
 	args := []interface{}{name, description, now.Now()}
 
@@ -135,46 +131,7 @@ func (c *SQLTodoController) AddItem(name string, description string, dueDate tim
 	return nil
 }
 
-func (c *SQLTodoController) AddItemTag(id string, tags []string) error {
-	if err := validation.ValidateTagNames(tags); err != nil {
-		return fmt.Errorf("validation failed: %w", err)
-	}
-
-	var tagsToAdd []string
-	for _, tag := range tags {
-		if _, err := c.getTagID(tag); err != nil {
-			if err == sql.ErrNoRows {
-				tagsToAdd = append(tagsToAdd, tag)
-			} else {
-				return err
-			}
-		}
-	}
-	if tagsToAdd != nil {
-		if err := c.AddTag(tagsToAdd); err != nil {
-			return err
-		}
-	}
-
-	params, placeHolders, _ := packTagParamsAndPlacholders(tags, true, len(tags))
-
-	q := fmt.Sprintf(`INSERT IGNORE INTO item_tags (item_id, tag_id)
-SELECT i.id, t.id
-FROM items i
-JOIN tags t ON t.name IN (%s)
-WHERE i.id = ?`, placeHolders)
-
-	stmtIns, err := c.db.Prepare(q)
-	if err != nil {
-		return fmt.Errorf("failed to Prepare addItemTag statement: %v", err)
-	}
-	defer stmtIns.Close()
-	params = append(params, id)
-	_, err = stmtIns.Exec(params...)
-	return err
-}
-
-func (c *SQLTodoController) ViewItem(id string) (*model.Item, error) {
+func (c *SQLRepository) GetItem(id string) (*model.Item, error) {
 	q := "SELECT * FROM items WHERE id = ?"
 	stmt, err := c.db.Prepare(q)
 	if err != nil {
@@ -190,7 +147,7 @@ func (c *SQLTodoController) ViewItem(id string) (*model.Item, error) {
 		return nil, fmt.Errorf("failed to scan row: %v", err)
 	}
 
-	item.TagsNames, err = c.ViewItemTagsName(id)
+	item.TagsNames, err = c.GetItemTagsName(id)
 	if err != nil {
 		return nil, fmt.Errorf("getting item tags: %v", err)
 	}
@@ -198,15 +155,15 @@ func (c *SQLTodoController) ViewItem(id string) (*model.Item, error) {
 	return item, err
 }
 
-func (c *SQLTodoController) ViewItems(templates ...queryTemplate) ([]model.Item, error) {
+func (c *SQLRepository) GetItems(templates ...repository.QueryTemplate) ([]model.Item, error) {
 	q := "SELECT * FROM items"
 	var args []interface{}
 
 	if len(templates) > 0 {
 		template := templates[0]
-		if template.condition != "" {
-			q += fmt.Sprintf(" WHERE %s", template.condition)
-			args = template.args
+		if template.Condition != "" {
+			q += fmt.Sprintf(" WHERE %s", template.Condition)
+			args = template.Args
 		}
 	}
 
@@ -225,50 +182,14 @@ func (c *SQLTodoController) ViewItems(templates ...queryTemplate) ([]model.Item,
 	return c.processItemRows(rows)
 }
 
-func (c *SQLTodoController) ViewItemsDone() ([]model.Item, error) {
-	return c.ViewItems(queryTemplate{
-		condition: "is_done = ?",
-		args:      []interface{}{1},
+func (c *SQLRepository) GetItemsDone() ([]model.Item, error) {
+	return c.GetItems(repository.QueryTemplate{
+		Condition: "is_done = ?",
+		Args:      []interface{}{1},
 	})
 }
 
-func (c *SQLTodoController) ViewItemTagsName(id string) ([]string, error) {
-	q := `SELECT name 
-	FROM tags where id in (
-	SELECT tag_id
-	FROM item_tags WHERE item_id = ?
-	)`
-
-	stmt, err := c.db.Prepare(q)
-	if err != nil {
-		return nil, fmt.Errorf("failed to prepare item tag name statement: %v", err)
-	}
-	defer stmt.Close()
-
-	rows, err := stmt.Query(id)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute query item tag name: %v", err)
-	}
-
-	defer rows.Close()
-
-	var itemTags []string
-	for rows.Next() {
-		var name string
-		if err := rows.Scan(&name); err != nil {
-			return nil, fmt.Errorf("can't read item tag name row: %v", err)
-		}
-		itemTags = append(itemTags, name)
-	}
-
-	if err = rows.Err(); err != nil {
-		return nil, fmt.Errorf("error iterating rows: %v", err)
-	}
-
-	return itemTags, nil
-}
-
-func (c *SQLTodoController) ViewItemsByTag(tags []string) ([]model.Item, error) {
+func (c *SQLRepository) GetItemByTag(tags []string) ([]model.Item, error) {
 	params, placeHolders, _ := packTagParamsAndPlacholders(tags, true, len(tags))
 	q := fmt.Sprintf(`SELECT *
 FROM items  
@@ -283,7 +204,7 @@ WHERE id IN (
 	stmt, err := c.db.Prepare(q)
 
 	if err != nil {
-		return nil, fmt.Errorf("failed to execute query view item tags: %v", err)
+		return nil, fmt.Errorf("failed to execute query Get item tags: %v", err)
 	}
 	defer stmt.Close()
 
@@ -295,7 +216,7 @@ WHERE id IN (
 	return c.processItemRows(rows)
 }
 
-func (c *SQLTodoController) DeleteItem(id string) error {
+func (c *SQLRepository) DeleteItem(id string) error {
 	stmtDel, err := c.db.Prepare("DELETE FROM items WHERE id = ?")
 	if err != nil {
 		return fmt.Errorf("could not prepare delete item statement: %v", err)
@@ -309,41 +230,7 @@ func (c *SQLTodoController) DeleteItem(id string) error {
 	return nil
 }
 
-func (c *SQLTodoController) DeleteItemTags(id string, tags []string) error {
-	args := make([]interface{}, 0)
-	args = append(args, id)
-
-	params, placeHolders, _ := packTagParamsAndPlacholders(tags, true, len(tags))
-	q := fmt.Sprintf("DELETE from item_tags where item_id = ? and tag_id IN (SELECT id FROM tags where name IN (%s))", placeHolders)
-	stmtDel, err := c.db.Prepare(q)
-	if err != nil {
-		return fmt.Errorf("failed to Prepare DeleteItemTags statement: %v", err)
-	}
-
-	defer stmtDel.Close()
-
-	args = append(args, params...)
-	if _, err := stmtDel.Exec(args...); err != nil {
-		return fmt.Errorf("could not query delete tag statement: %v", err)
-	}
-	return nil
-}
-
-func (c *SQLTodoController) DeleteAllItemTags(id string) error {
-	q := "DELETE from item_tags where item_id = ?"
-	stmtDel, err := c.db.Prepare(q)
-	if err != nil {
-		return fmt.Errorf("failed to Prepare DeleteAllItemTags statement: %v", err)
-	}
-
-	defer stmtDel.Close()
-	if _, err := stmtDel.Exec(id); err != nil {
-		return fmt.Errorf("could not query all delete tag statement: %v", err)
-	}
-	return nil
-}
-
-func (c *SQLTodoController) UpdateItem(id string, updates map[string]interface{}) error {
+func (c *SQLRepository) UpdateItem(id string, updates map[string]interface{}) error {
 
 	var setFields []string
 	var args []interface{}
@@ -367,7 +254,7 @@ func (c *SQLTodoController) UpdateItem(id string, updates map[string]interface{}
 	return err
 }
 
-func (c *SQLTodoController) UpdateItemDone(id string) error {
+func (c *SQLRepository) UpdateItemStatus(id string) error {
 	q := "UPDATE items SET is_done = 1 WHERE id = ?"
 	stmt, err := c.db.Prepare(q)
 	if err != nil {

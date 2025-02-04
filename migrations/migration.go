@@ -26,7 +26,8 @@ func main() {
 	
 	
 	currentDir := filepath.Dir(b)
-	migrationPath := filepath.Join(currentDir, "..", "..", "db", "migrations")
+	migrationPath := filepath.Join(currentDir, "..", "internal", "db", "migrations")
+	fmt.Println(migrationPath)
 	
 	dbManager, err := db.NewDBManager(driver, migrationPath)
 	if err != nil {

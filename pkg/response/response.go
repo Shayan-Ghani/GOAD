@@ -3,7 +3,7 @@ package response
 import (
 	"fmt"
 	"gocasts/ToDoApp/internal/model"
-	"gocasts/ToDoApp/internal/pkg/formatter"
+	"gocasts/ToDoApp/pkg/formatter"
 	"time"
 )
 
@@ -11,7 +11,7 @@ type ItemResponse struct {
 	model.Item
 	IsDone    string
 	TagsNames string
-	DueDate string
+	DueDate   string
 	CreatedAt string
 }
 
@@ -34,45 +34,44 @@ func NewItemRes(item *model.Item) (*ItemResponse, error) {
 
 	dLocal := item.DueDate.In(localLocation).Format("2006-01-02 15:04:05")
 
-	if item.DueDate.IsZero(){
+	if item.DueDate.IsZero() {
 		dLocal = "Not Set"
 	}
-
 
 	return &ItemResponse{
 		Item:      *item,
 		IsDone:    status,
-		DueDate: dLocal,
+		DueDate:   dLocal,
 		TagsNames: tags,
 		CreatedAt: cLocal,
 	}, nil
 }
 
 func Respond(format string, args ...any) {
-    if hasNoRecords(args) {
-        fmt.Println("**Found 0 Records!**")
-        return
-    }
+	if hasNoRecords(args) {
+		fmt.Println("**Found 0 Records!**")
+		return
+	}
 
-    if format == "table" {
-        PrintTable(args...)
-    } else {
-        PrintJson(args...)
-    }
+	if format == "table" {
+		PrintTable(args...)
+	} else {
+		PrintJson(args...)
+	}
 }
 
 func hasNoRecords(args []any) bool {
-    for _, arg := range args {
-        switch v := arg.(type) {
-        case []model.Item:
-            if len(v) == 0 {
-                return true
-            }
-        case []model.Tag:
-            if len(v) == 0 {
-                return true
-            }
-        }
-    }
-    return false
+	for _, arg := range args {
+		switch v := arg.(type) {
+		case []model.Item:
+			if len(v) == 0 {
+				return true
+			}
+		case []model.Tag:
+			if len(v) == 0 {
+				return true
+			}
+		}
+	}
+	return false
 }

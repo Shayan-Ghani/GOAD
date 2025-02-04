@@ -3,8 +3,8 @@ package main
 import (
 	"database/sql"
 	"gocasts/ToDoApp/internal/constant"
-	"gocasts/ToDoApp/internal/controller"
 	"gocasts/ToDoApp/internal/delivery/cli"
+	sqlrepo "gocasts/ToDoApp/internal/repository/sql"
 	"log"
 	"os"
 
@@ -23,7 +23,7 @@ func main() {
 		log.Fatal(ping)
 	}
 
-	db := controller.NewSQLTodoController(driver)
+	db := sqlrepo.NewSQLRepo((driver))
 
 	cli := cli.NewCLI(db)
 

@@ -3,23 +3,23 @@ package command
 import (
 	"flag"
 	"fmt"
-	"gocasts/ToDoApp/internal/controller"
-	"gocasts/ToDoApp/internal/pkg/response"
-	"gocasts/ToDoApp/internal/pkg/validation"
+	"gocasts/ToDoApp/internal/repository"
+	"gocasts/ToDoApp/pkg/response"
+	"gocasts/ToDoApp/pkg/validation"
 )
 
 type TagCommand struct {
 	BaseCommand
-	controller *controller.SQLTodoController
+	repo repository.Repository
 }
 
-func NewTagCommand(ctrl *controller.SQLTodoController, action string) *TagCommand {
+func NewTagCommand(repo repository.Repository, action string) *TagCommand {
 	return &TagCommand{
 		BaseCommand: BaseCommand{
 			name:        action,
 			flags:       &Flags{},
 		},
-		controller: ctrl,
+		repo: repo,
 	}
 }
 
@@ -54,7 +54,7 @@ func (tcmd *TagCommand) parseFlags(args []string) error {
 }
 
 func (tcmd *TagCommand) handleView() error {
-	tags, err := tcmd.controller.ViewTags()
+	tags, err := tcmd.repo.GetTags()
 	if err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ func (tcmd *TagCommand) handleDelete() error {
 	if err = validation.ValidateFlagsDefinedStr([]string{"-n"}, tcmd.flags.Name); err != nil {
 		return fmt.Errorf("%w", err)
 	}
-	err = tcmd.controller.DeleteTag(tcmd.flags.Name)
+	err = tcmd.repo.DeleteTag(tcmd.flags.Name)
 
 	return err
 }
