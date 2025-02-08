@@ -5,6 +5,15 @@ import (
 	"strings"
 )
 
+
+type Help struct{
+	Message string
+}
+
+func (h Help) Error() string {
+    return "help requested"
+}
+
 type ValidationError struct {
 	Field   string
 	Message string
@@ -48,8 +57,44 @@ func ValidateTagNames(tags []string) error {
 	return nil
 }
 
-func ValidateResourceAction(cmd map[string][]string, resource string, action string) error {
-	_, ok := cmd[resource]
+func ValidateArgCount(args []string) error {
+
+	l := len(args)
+	ValidCount := 2
+
+	if l < ValidCount {
+		return &ValidationError{
+			Field:   "arguments",
+			Message: fmt.Sprintf("insufficient number of arguments: expected at least %d, got %d", ValidCount, l),
+		}
+	}
+
+	ValidCount = 4
+
+	if command := args[1]; command == "update" &&  l < ValidCount {
+		return &ValidationError{
+			Field:   "arguments",
+			Message: fmt.Sprintf("insufficient number of arguments for update: expected at least %d, got %d", ValidCount, l),
+		}
+	}
+	return nil
+}
+
+
+func ValidateCommand(args []string) error {
+	if err := ValidateArgCount(args); err != nil {
+		return err
+	}
+
+	resource := args[0]
+	command := args[1]
+
+	validCommands := map[string][]string{
+		"item": {"add", "view", "delete", "update", "done", "--help"},
+		"tag":  {"view", "delete", "--help"},
+	}
+
+	_, ok := validCommands[resource]
 
 	if !ok {
 		return &ValidationError{
@@ -58,25 +103,15 @@ func ValidateResourceAction(cmd map[string][]string, resource string, action str
 		}
 	}
 
-	for _, act := range cmd[resource] {
-		if action == act {
+	for _, act := range validCommands[resource] {
+		if command == act {
 			return nil
 		}
 	}
 	return &ValidationError{
-		Field:   "action",
-		Message: fmt.Sprintf("Unknown action %s for resource %s", action, resource),
+		Field:   "command",
+		Message: fmt.Sprintf("Unknown command %s for resource %s", command, resource),
 	}
-}
-
-func ValidateFlagCount(provided int, required int) error {
-	if provided < required {
-		return &ValidationError{
-			Field:   "arguments",
-			Message: fmt.Sprintf("insufficient number of arguments: expected at least %d, got %d", required, provided),
-		}
-	}
-	return nil
 }
 
 func ValidateFlagsDefinedStr(argNames []string, flags ...string) error {

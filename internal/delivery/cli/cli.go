@@ -1,88 +1,65 @@
-package cli
+package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
+	"os"
 
-	"github.com/Shayan-Ghani/GOAD/internal/delivery/cli/command"
-	"github.com/Shayan-Ghani/GOAD/internal/repository"
+	"github.com/Shayan-Ghani/GOAD/internal/delivery/command"
+	cmdflag "github.com/Shayan-Ghani/GOAD/internal/delivery/command/cmdflag"
 	"github.com/Shayan-Ghani/GOAD/pkg/validation"
+	// "github.com/Shayan-Ghani/GOAD/pkg/response"
 )
 
-type CLI struct {
-	repo          repository.Repository
-	commands      map[string]command.Command
-	validCommands map[string][]string
+type CliRequest struct {
+	Resource string
+	Command  string
+	Flags    *cmdflag.Flags
 }
 
-func NewCLI(repo repository.Repository) *CLI {
-	return &CLI{
-		repo:     repo,
-		commands: make(map[string]command.Command),
-		validCommands: map[string][]string{
-			"item": {"add", "view", "delete", "update", "done", "--help"},
-			"tag":  {"view", "delete", "--help"},
-		},
-	}
-}
 
-func Ishelp(arg string) bool {
-	if arg == "--help" || arg == "-h" {
-		return true
-	}
-	return false
-}
+func main() {
+		var args = os.Args[1:]
+		c, err := command.NewCommand(args) 
+	
+        if err != nil {
+            if t, isHelp := err.(validation.Help); !isHelp {
+                log.Fatalln(err)
+            } else {
+                PrintUsage(t.Message)
+				os.Exit(1)
+            }
+        }
 
-func (c *CLI) registerCommands(resource string, action string) {
-
-	switch resource {
-	case "item":
-		c.commands[resource] = command.NewItemCommand(c.repo, action)
-	case "tag":
-		c.commands[resource] = command.NewTagCommand(c.repo, action)
-	}
-
-}
-
-func (c *CLI) Exec(args []string) error {
-	if err := validation.ValidateFlagCount(len(args), 1); err != nil {
-		c.PrintUsage()
-		return fmt.Errorf("%w", err)
-	}
-
-	if Ishelp(args[0]) {
-		c.PrintUsage()
-		return nil
-	}
-
-	resource := args[0]
-	action := args[1]
-
-	validArgcount := 3
-	if action == "update" || (action == "add" && resource == "tag") {
-		validArgcount = 4
-	}
-
-	if err := validation.ValidateResourceAction(c.validCommands, resource, action); err != nil {
-		c.PrintUsage()
-		return fmt.Errorf("%w", err)
-	}
-
-	if !Ishelp(action) {
-		if err := validation.ValidateFlagCount(len(args), validArgcount); err != nil {
-			c.PrintUsage()
-			return fmt.Errorf("%s %s command : %w", resource, action, err)
+		var req = CliRequest{
+			Flags: c.GetFlags(),
+			Resource: args[0],
+			Command: args[1],
 		}
-	} else {
-		c.PrintUsage()
-		return nil
-	}
 
-	c.registerCommands(resource, action)
-	return c.commands[resource].Exec(args)
+
+		
+
+		data, err := json.Marshal(req)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		fmt.Println(string(data))
+
 }
 
-func (c *CLI) PrintUsage() {
-	fmt.Printf("Available commands:\n")
+
+
+func PrintUsage(s ...string) {
+
+	if s[0] != "" {
+		fmt.Println(s[0])
+		return
+	}
+
+	fmt.Println("Available commands:")
 
 	itemDesc := map[string]string{
 		"--help": "see help for flags and options",
