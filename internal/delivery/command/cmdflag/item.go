@@ -29,13 +29,13 @@ func (f *Flags) ItemAdd() error {
 }
 
 func (f *Flags) ItemView() error {
-	return validation.ValidateFlagsDefinedStr([]string{"-i"}, f.ID)
+	return nil
 }
 
 func (f *Flags) ItemUpdate() error {
 
 	if err := validation.ValidateFlagsDefinedStr([]string{"-i"}, f.ID); err != nil {
-		return fmt.Errorf("%w", err)
+		return err
 	}
 
 	if !IsFlagDefined(f.Description, f.Name) {
