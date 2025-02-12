@@ -1,58 +1,23 @@
-package main
+package cli
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
-	"os"
 
-	"github.com/Shayan-Ghani/GOAD/internal/delivery/command"
-	cmdflag "github.com/Shayan-Ghani/GOAD/internal/delivery/command/cmdflag"
-	"github.com/Shayan-Ghani/GOAD/pkg/validation"
-	// "github.com/Shayan-Ghani/GOAD/pkg/response"
+	"github.com/Shayan-Ghani/GOAD/internal/model"
+	"github.com/Shayan-Ghani/GOAD/pkg/response"
 )
 
-type CliRequest struct {
-	Resource string
-	Command  string
-	Flags    *cmdflag.Flags
+type Printer struct{}
+
+func NewPrinter() Printer {
+	return Printer{}
 }
 
-
-func main() {
-		var args = os.Args[1:]
-		c, err := command.NewCommand(args) 
-	
-        if err != nil {
-            if t, isHelp := err.(validation.Help); !isHelp {
-                log.Fatalln(err)
-            } else {
-                PrintUsage(t.Message)
-				os.Exit(1)
-            }
-        }
-
-		var req = CliRequest{
-			Flags: c.GetFlags(),
-			Resource: args[0],
-			Command: args[1],
-		}
-
-
-		
-
-		data, err := json.Marshal(req)
-		if err != nil {
-			log.Fatalln(err)
-		}
-
-		fmt.Println(string(data))
-
+func (p Printer) PrintResponse(format string, items []model.Item) {
+	response.Respond(format, items)
 }
 
-
-
-func PrintUsage(s ...string) {
+func (p Printer) PrintUsage(s ...string) {
 
 	if s[0] != "" {
 		fmt.Println(s[0])
