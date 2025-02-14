@@ -5,17 +5,17 @@ import (
 )
 
 type Item struct {
-	ID          string
-	Name        string
-	Description string
-	IsDone      bool
-	DueDate  	time.Time
-	CreatedAt   time.Time
-	ModifiedAt  time.Time
-	TagsNames []string
+	ID          string    `json:"id"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	IsDone      bool      `json:"is_done"`
+	DueDate     time.Time `json:"due_date,omitempty"`
+	CreatedAt   time.Time `json:"omitempty"`
+	ModifiedAt  time.Time `json:"omitempty"`
+	TagsNames   []string  `json:"tags"`
 }
 
-type TagItems struct {
+type ItemTag struct {
 	ItemID string
 	TagID  string
 }
