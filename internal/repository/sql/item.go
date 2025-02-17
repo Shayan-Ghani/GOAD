@@ -3,21 +3,19 @@ package sqlrepository
 import (
 	"database/sql"
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
 
 	"github.com/Shayan-Ghani/GOAD/internal/model"
-	"github.com/Shayan-Ghani/GOAD/internal/repository"
 	now "github.com/Shayan-Ghani/GOAD/pkg/time"
 )
 
-type SQLRepository struct {
+type ItemRepository struct {
 	db *sql.DB
 }
 
-func NewSQLRepo(db *sql.DB) *SQLRepository {
-	return &SQLRepository{db: db}
+func NewItemRepo(db *sql.DB) *ItemRepository {
+	return &ItemRepository{db: db}
 }
 
 func scanItem(rows *sql.Rows, item *model.Item, row ...*sql.Row) error {
@@ -65,16 +63,13 @@ func scanItem(rows *sql.Rows, item *model.Item, row ...*sql.Row) error {
 	return err
 }
 
-func (c *SQLRepository) processItemRows(rows *sql.Rows) (itemRows []model.Item, err error) {
+func (c *ItemRepository) processItemRows(rows *sql.Rows) (itemRows []model.Item, err error) {
 	for rows.Next() {
 		var item model.Item
 		if err = scanItem(rows, &item); err != nil {
 			return nil, fmt.Errorf("failed to scan row: %v", err)
 		}
-		item.TagsNames, err = c.GetItemTagsName(item.ID)
-		if err != nil {
-			return nil, fmt.Errorf("getting item tags: %v", err)
-		}
+	
 		itemRows = append(itemRows, item)
 	}
 
@@ -96,7 +91,7 @@ func parseDatetime(datetime []uint8) (time.Time, error) {
 	return time.Time{}, nil
 }
 
-func (c *SQLRepository) AddItem(name string, description string, dueDate time.Time, tags ...string) error {
+func (c *ItemRepository) AddItem(name string, description string, dueDate time.Time) (insID int64 , err error) {
 	q := "INSERT INTO items (name, description, created_at) VALUES (?, ?, ?)"
 	args := []interface{}{name, description, now.Now()}
 
@@ -107,32 +102,23 @@ func (c *SQLRepository) AddItem(name string, description string, dueDate time.Ti
 
 	stmt, err := c.db.Prepare(q)
 	if err != nil {
-		return fmt.Errorf("failed to prepare insert statement: %w", err)
+		return 0, fmt.Errorf("failed to prepare insert statement: %w", err)
 	}
 	defer stmt.Close()
 
 	insert, err := stmt.Exec(args...)
 	if err != nil {
-		return fmt.Errorf("failed to insert item: %w", err)
-	}
-	if tags != nil {
-		id, err := insert.LastInsertId()
-		if err != nil {
-			return fmt.Errorf("couldn't get the last insert ID: %v", err)
-		}
-		if err = c.AddItemTag(strconv.Itoa(int(id)), tags); err != nil {
-			return fmt.Errorf(fmt.Sprintf("fail to add tags %s to item: ", tags), err)
-		}
-
-		if err = c.AddTag(tags); err != nil {
-			return fmt.Errorf(fmt.Sprintf("fail to add tags %s to tags table: ", tags), err)
-		}
+		return 0, fmt.Errorf("failed to insert item: %w", err)
 	}
 
-	return nil
+	insID, err = insert.LastInsertId()
+	if err != nil {
+		return 0, fmt.Errorf("couldn't get the last insert ID: %v", err)
+	}
+	return insID, nil
 }
 
-func (c *SQLRepository) GetItem(id string) (*model.Item, error) {
+func (c *ItemRepository) GetItem(id string) (*model.Item, error) {
 	q := "SELECT * FROM items WHERE id = ?"
 	stmt, err := c.db.Prepare(q)
 	if err != nil {
@@ -148,15 +134,15 @@ func (c *SQLRepository) GetItem(id string) (*model.Item, error) {
 		return nil, fmt.Errorf("failed to scan row: %v", err)
 	}
 
-	item.TagsNames, err = c.GetItemTagsName(id)
-	if err != nil {
-		return nil, fmt.Errorf("getting item tags: %v", err)
-	}
-
 	return item, err
 }
 
-func (c *SQLRepository) GetItems(templates ...repository.QueryTemplate) ([]model.Item, error) {
+type QueryTemplate struct {
+	Condition string
+	Args      []interface{}
+}
+
+func (c *ItemRepository) GetItems(templates ...QueryTemplate) ([]model.Item, error) {
 	q := "SELECT * FROM items"
 	var args []interface{}
 
@@ -183,14 +169,14 @@ func (c *SQLRepository) GetItems(templates ...repository.QueryTemplate) ([]model
 	return c.processItemRows(rows)
 }
 
-func (c *SQLRepository) GetItemsDone() ([]model.Item, error) {
-	return c.GetItems(repository.QueryTemplate{
+func (c *ItemRepository) GetItemsDone() ([]model.Item, error) {
+	return c.GetItems(QueryTemplate{
 		Condition: "is_done = ?",
 		Args:      []interface{}{1},
 	})
 }
 
-func (c *SQLRepository) GetItemByTag(tags []string) ([]model.Item, error) {
+func (c *ItemRepository) GetItemByTag(tags []string) ([]model.Item, error) {
 	params, placeHolders, _ := packTagParamsAndPlacholders(tags, true, len(tags))
 	q := fmt.Sprintf(`SELECT *
 FROM items  
@@ -217,7 +203,7 @@ WHERE id IN (
 	return c.processItemRows(rows)
 }
 
-func (c *SQLRepository) DeleteItem(id string) error {
+func (c *ItemRepository) DeleteItem(id string) error {
 	stmtDel, err := c.db.Prepare("DELETE FROM items WHERE id = ?")
 	if err != nil {
 		return fmt.Errorf("could not prepare delete item statement: %v", err)
@@ -231,7 +217,9 @@ func (c *SQLRepository) DeleteItem(id string) error {
 	return nil
 }
 
-func (c *SQLRepository) UpdateItem(id string, updates map[string]interface{}) error {
+func (c *ItemRepository) UpdateItem(id string, updates map[string]interface{}) error {
+
+	fmt.Printf("updates: %v\n", updates)
 
 	var setFields []string
 	var args []interface{}
@@ -255,7 +243,7 @@ func (c *SQLRepository) UpdateItem(id string, updates map[string]interface{}) er
 	return err
 }
 
-func (c *SQLRepository) UpdateItemStatus(id string) error {
+func (c *ItemRepository) UpdateItemStatus(id string) error {
 	q := "UPDATE items SET is_done = 1 WHERE id = ?"
 	stmt, err := c.db.Prepare(q)
 	if err != nil {
