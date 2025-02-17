@@ -3,7 +3,7 @@ name: GOAD Build And Release
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     
 permissions:
