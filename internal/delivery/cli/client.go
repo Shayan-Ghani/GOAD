@@ -50,9 +50,6 @@ func (c *Client) sendRequest(req requesthandler.CliRequest, itemSvcURL string, t
 
 	h := requesthandler.NewHandler(itemSvcURL, tagSvcURL)
 
-
-	fmt.Printf("h: %+s , %+s\n", h.ItemSvcUrl, h.TagSvcUrl)
-
 	res, err := h.HandleRequest(req)
 	if err != nil {
 		return nil, err
