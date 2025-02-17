@@ -34,7 +34,10 @@ func Handle(mux *http.ServeMux, s *Service) {
 
 		if err = s.Add(item); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
 		}
+
+		w.WriteHeader(http.StatusCreated)
 
 		json.NewEncoder(w).Encode(item)
 	})
@@ -45,9 +48,10 @@ func Handle(mux *http.ServeMux, s *Service) {
 			ID: id,
 		}); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
 		}
 
-		json.NewEncoder(w).Encode(http.StatusOK)
+		w.WriteHeader(http.StatusOK)
 
 	})
 
@@ -55,6 +59,7 @@ func Handle(mux *http.ServeMux, s *Service) {
 		res, err := s.Get()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
 		}
 
 		json.NewEncoder(w).Encode(res.Items)
@@ -68,6 +73,7 @@ func Handle(mux *http.ServeMux, s *Service) {
 		})
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
 		}
 
 		if res != nil{
@@ -92,9 +98,10 @@ func Handle(mux *http.ServeMux, s *Service) {
 
 		if err := s.Update(item); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
 		}
 
-		json.NewEncoder(w).Encode(http.StatusNoContent)
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	mux.HandleFunc("POST /items/done", func(w http.ResponseWriter, r *http.Request) {
@@ -117,15 +124,17 @@ func Handle(mux *http.ServeMux, s *Service) {
 			ID: item.ID,
 		}); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
 		}
 
-		json.NewEncoder(w).Encode(http.StatusCreated)
+		w.WriteHeader(http.StatusCreated)
 	})
 
 	mux.HandleFunc("GET /items/done", func(w http.ResponseWriter, r *http.Request) {
 		res, err := s.GetDone()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
 		}
 
 		json.NewEncoder(w).Encode(res.Items)

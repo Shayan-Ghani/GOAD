@@ -6,11 +6,15 @@ type ID struct {
 	ID string
 }
 
-type Add struct {
+type BasePayload struct {
 	Name        string   `json:"name"`
 	Description string   `json:"description"`
 	DueDate     string   `json:"due_date"`
 	Tags        []string `json:"tags"`
+}
+
+type Add struct {
+	BasePayload
 }
 
 type Get struct {
@@ -32,10 +36,8 @@ type GetResponse struct {
 }
 
 type Update struct {
-	ID          string
-	DueDate     string
-	Name        string
-	Description string
+	ID string
+	BasePayload
 }
 
 type UpdateStatus struct {

@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	getItemTagsName = "/tags/"
+	getItemTagsName = "/tags/item/"
 	addItemTag      = "/tags/item"
 	addTag          = "/tags"
 )
@@ -31,7 +31,7 @@ type QueryTemplate struct {
 }
 
 type ServiceRepository interface {
-	AddItem(name string, description string, dueDate time.Time, tags ...string) (insID int64, err error)
+	AddItem(name string, description string, dueDate time.Time) (insID int64, err error)
 
 	DeleteItem(id string) error
 
@@ -57,6 +57,68 @@ func NewItemService(repo ServiceRepository, TagSvcUrl string) Service {
 	}
 }
 
+func (s Service) addTagToItem(id int, tags []string) error {
+
+	var itPayload = tagrequest.BasePayload{
+		ItemID: strconv.Itoa(id),
+		Tags:   tags,
+	}
+
+	itemTag, err := json.Marshal(itPayload)
+
+	if err != nil {
+		return err
+	}
+
+	res, err := http.Post(s.TagSvcUrl+addItemTag, "application/json", bytes.NewBuffer(itemTag))
+
+	if err != nil {
+		return err
+	}
+
+	defer res.Body.Close()
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return fmt.Errorf("%s - got code %d", string(body), res.StatusCode)
+	}
+
+
+	var tPayload = tagrequest.Tag{
+		Tags: tags,
+	}
+
+	t, err := json.Marshal(tPayload)
+	if err != nil {
+		return err
+	}
+
+	tagRes, err := http.Post(s.TagSvcUrl+addTag, "application/json", bytes.NewBuffer(t))
+
+	if err != nil {
+		return err
+	}
+
+	defer tagRes.Body.Close()
+
+	tBody, err := io.ReadAll(tagRes.Body)
+
+	if err != nil {
+		return err
+	}
+
+	if tagRes.StatusCode != http.StatusCreated {
+		return fmt.Errorf("%s - got code %d", string(tBody), tagRes.StatusCode)
+	}
+
+	return nil
+
+}
+
 func (s Service) Add(request itemrequest.Add) error {
 	var err error
 
@@ -77,63 +139,19 @@ func (s Service) Add(request itemrequest.Add) error {
 		}
 	}
 
-	insID, err := s.repo.AddItem(request.Name, request.Description, t, request.Tags...)
+	insID, err := s.repo.AddItem(request.Name, request.Description, t)
 
 	if err != nil {
 		return err
 	}
 
-	var itPayload = tagrequest.BasePayload{
-		ItemID: strconv.Itoa(int(insID)),
-		Tags:   request.Tags,
+	if len(request.Tags) > 0 {
+		if err := s.addTagToItem(int(insID), request.Tags); err != nil {
+			return err
+		}
 	}
 
-	itemTag, err := json.Marshal(itPayload)
-
-	if err != nil {
-		return err
-	}
-
-	res, err := http.Post(s.TagSvcUrl+addItemTag, "application/json", bytes.NewBuffer(itemTag))
-
-	if err != nil {
-		return err
-	}
-
-	defer res.Body.Close()
-	body, err := io.ReadAll(res.Body)
-
-	if err != nil {
-		return err
-	}
-
-	if res.StatusCode != http.StatusOK {
-		return fmt.Errorf("%s - got code %d", string(body), res.StatusCode)
-	}
-
-	var tPayload = tagrequest.Tag{
-		Tags: request.Tags,
-	}
-	tags, err := json.Marshal(tPayload)
-	if err != nil {
-		return err
-	}
-	
-	tagRes, err := http.Post(s.TagSvcUrl+addTag, "application/json", bytes.NewBuffer(tags))
-
-	if err != nil {
-		return err
-	}
-
-	defer tagRes.Body.Close()
-
-	tBody, err := io.ReadAll(tagRes.Body)
-
-	if tagRes.StatusCode != http.StatusCreated {
-		return fmt.Errorf("%s - got code %d", string(tBody), tagRes.StatusCode)
-	}
-
-	return err
+	return nil
 }
 
 type GetResponse struct {
@@ -178,7 +196,7 @@ func (s Service) handleItems(result interface{}, err error) (*GetResponse, error
 		}
 	}
 
-	fmt.Println(items)
+	fmt.Printf("%+v", items)
 	return &GetResponse{
 		Items: items,
 	}, nil
@@ -218,13 +236,19 @@ func (s Service) GetByTag(request itemrequest.GetByTag) (*GetResponse, error) {
 }
 
 func (s Service) Update(request itemrequest.Update) error {
-	var err error
-
-	if request.Name == "" || request.Description == "" {
-		return &validation.ValidationError{
-			Field:   "parameters",
-			Message: "name or description not provided in the request payload!",
+	if len(request.Tags) > 0 {
+		id , err := strconv.Atoi(request.ID)
+		if err != nil {
+			return err
 		}
+
+		if err := s.addTagToItem(id, request.Tags); err != nil {
+			return err
+		}
+	}
+
+	if request.Name == "" && request.Description == ""{
+		return nil
 	}
 
 	updates := make(map[string]interface{}, 3)
@@ -244,13 +268,15 @@ func (s Service) Update(request itemrequest.Update) error {
 		flagUpdates["due_date"] = t
 	}
 
+	fmt.Printf("flagUpdates: %v\n", flagUpdates)
+
 	for key, value := range flagUpdates {
-		updates[key] = value
+		if value != "" {
+			updates[key] = value
+		}
 	}
 
-	err = s.repo.UpdateItem(request.ID, updates)
-
-	return err
+	return s.repo.UpdateItem(request.ID, updates)
 }
 
 func (s Service) UpdateStatus(request itemrequest.UpdateStatus) error {

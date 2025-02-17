@@ -70,9 +70,6 @@ func (c *ItemRepository) processItemRows(rows *sql.Rows) (itemRows []model.Item,
 			return nil, fmt.Errorf("failed to scan row: %v", err)
 		}
 	
-		if err != nil {
-			return nil, fmt.Errorf("getting item tags: %v", err)
-		}
 		itemRows = append(itemRows, item)
 	}
 
@@ -94,7 +91,7 @@ func parseDatetime(datetime []uint8) (time.Time, error) {
 	return time.Time{}, nil
 }
 
-func (c *ItemRepository) AddItem(name string, description string, dueDate time.Time, tags ...string) (insID int64 , err error) {
+func (c *ItemRepository) AddItem(name string, description string, dueDate time.Time) (insID int64 , err error) {
 	q := "INSERT INTO items (name, description, created_at) VALUES (?, ?, ?)"
 	args := []interface{}{name, description, now.Now()}
 
@@ -221,6 +218,8 @@ func (c *ItemRepository) DeleteItem(id string) error {
 }
 
 func (c *ItemRepository) UpdateItem(id string, updates map[string]interface{}) error {
+
+	fmt.Printf("updates: %v\n", updates)
 
 	var setFields []string
 	var args []interface{}
