@@ -1,4 +1,4 @@
-package cli
+package requesthandler
 
 import (
     "github.com/Shayan-Ghani/GOAD/internal/delivery/command/cmdflag"

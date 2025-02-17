@@ -31,5 +31,9 @@ func (f *Flags) TagDelete() error {
 
 	// err = tcmd.repo.DeleteTag(tcmd.flags.Name)
 
-	return validation.ValidateFlagsDefinedStr([]string{"-n"}, f.Name)
+	if IsFlagDefined(f.Name, f.ItemID){
+		return validation.New("arguments", "")
+	}
+
+	return nil 
 }

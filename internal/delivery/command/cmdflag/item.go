@@ -23,7 +23,6 @@ func (f *Flags) handleItemCommand() error {
 	}
 }
 
-
 func (f *Flags) ItemAdd() error {
 	return validation.ValidateFlagsDefinedStr([]string{"-n", "-d"}, f.Name, f.Description)
 }
@@ -38,8 +37,8 @@ func (f *Flags) ItemUpdate() error {
 		return err
 	}
 
-	if !IsFlagDefined(f.Description, f.Name) {
-		return fmt.Errorf("description and name must be defined")
+	if f.Description == "" &&  f.Name == "" && f.Tags == "" {
+		return fmt.Errorf("description, name or tags must be defined")
 	}
 
 	return nil
@@ -50,14 +49,5 @@ func (f *Flags) ItemDone() error {
 }
 
 func (f *Flags) ItemDelete() error {
-
-	if err := validation.ValidateFlagsDefinedStr([]string{"-i"}, f.ID); err != nil {
-		return fmt.Errorf("%w", err)
-	}
-
-	if IsFlagDefined(f.Tags) && f.DelTags {
-		return validation.New("argument", "Can't use a combinatio of --del-tags and -t")
-	}
-
-	return nil
+	return validation.ValidateFlagsDefinedStr([]string{"-i"}, f.ID)
 }

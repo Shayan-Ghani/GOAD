@@ -22,6 +22,7 @@ type Flags struct {
 	command     string
 	Name        string
 	ID          string
+	ItemID		string
 	Description string
 	Tags        string
 	Short       string
@@ -29,7 +30,6 @@ type Flags struct {
 	DueDate     string
 	All         bool
 	Done        bool
-	DelTags     bool
 }
 
 func New(resource string, command string) *Flags {
@@ -48,6 +48,7 @@ func (f *Flags) Parse(args []string) error {
 	
 	fs.StringVar(&f.Name, "n", "", fmt.Sprintf("%s name", f.resource))
 	fs.StringVar(&f.ID, "i", "", "item id")
+	fs.StringVar(&f.ItemID, "item-id", "", "item id")
 	fs.StringVar(&f.Description, "d", "", "item description")
 	fs.StringVar(&f.Tags, "t", "", "item tags to add/delete or filter view by.")
 	fs.StringVar(&f.Short, "short", "", "item short view (no tags)")
@@ -55,8 +56,6 @@ func (f *Flags) Parse(args []string) error {
 	fs.StringVar(&f.DueDate, "due-date", "", "item due date in 'year-month-day hour:minute:second' format.")
 	fs.BoolVar(&f.All, "all", false, fmt.Sprintf("when set to true, view all %s references (bulk)", f.resource))
 	fs.BoolVar(&f.Done, "done", false, "when set to true, change the status of an item to done")
-	fs.BoolVar(&f.DelTags, "del-tags", false, "when set to ture, deletes all tags of the item")
-
 
 
 	if args[1] == "--help" {

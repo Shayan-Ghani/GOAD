@@ -1,11 +1,9 @@
 package cli
 
 import (
-	"encoding/json"
 	"fmt"
-	"net"
 
-	"github.com/Shayan-Ghani/GOAD/config"
+	"github.com/Shayan-Ghani/GOAD/internal/delivery/cli/requesthandler"
 	"github.com/Shayan-Ghani/GOAD/internal/delivery/command"
 	"github.com/Shayan-Ghani/GOAD/pkg/validation"
 )
@@ -20,7 +18,7 @@ func NewClient() *Client {
 	}
 }
 
-func (c *Client) Run(args []string) error {
+func (c *Client) Run(args []string, itemSvcURL string, tagSvcURL string) error {
 	cmd, err := command.NewCommand(args)
 	if err != nil {
 		if t, isHelp := err.(validation.Help); isHelp {
@@ -30,45 +28,45 @@ func (c *Client) Run(args []string) error {
 		return err
 	}
 
-	req := &CliRequest{
+	req := requesthandler.CliRequest{
 		Flags:    cmd.GetFlags(),
 		Resource: args[0],
 		Command:  args[1],
 	}
 
-	response, err := c.sendRequest(req)
+	response, err := c.sendRequest(req, itemSvcURL, tagSvcURL)
 	if err != nil {
 		return err
 	}
 
-	return c.handleResponse(req, response)
+	if response != nil {
+		return c.handleResponse(req.Flags.Format, response)
+	}
+
+	return nil
 }
 
-func (c *Client) sendRequest(req *CliRequest) (*CliResponse, error) {
-	conn, err := net.Dial("tcp", config.Addr)
+func (c *Client) sendRequest(req requesthandler.CliRequest, itemSvcURL string, tagSvcURL string) (*requesthandler.CliResponse, error) {
+
+	h := requesthandler.NewHandler(itemSvcURL, tagSvcURL)
+
+
+	fmt.Printf("h: %+s , %+s\n", h.ItemSvcUrl, h.TagSvcUrl)
+
+	res, err := h.HandleRequest(req)
 	if err != nil {
-		return nil, fmt.Errorf("failed to connect to server: %w", err)
-	}
-	defer conn.Close()
-
-	if err = json.NewEncoder(conn).Encode(req); err != nil {
-		return nil, fmt.Errorf("failed to send request: %w", err)
+		return nil, err
 	}
 
-	var res CliResponse
-	if err = json.NewDecoder(conn).Decode(&res); err != nil {
-		return nil, fmt.Errorf("failed to read response: %w", err)
-	}
-
-	return &res, nil
+	return res, nil
 }
 
-func (c *Client) handleResponse(req *CliRequest, res *CliResponse) error {
+func (c *Client) handleResponse(format string, res *requesthandler.CliResponse) error {
 	if res.Err != "" {
 		return fmt.Errorf(res.Err)
 	}
-	if res.Items != nil{
-		c.printer.PrintResponse(req.Flags.Format, res.Items)
+	if res.Items != nil {
+		c.printer.PrintResponse(format, res.Items)
 	}
 
 	return nil

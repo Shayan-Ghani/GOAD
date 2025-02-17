@@ -46,12 +46,12 @@ func (p Printer) PrintUsage(s ...string) {
 
 	tagDesc := map[string]string{
 		"view":   "View tags",
-		"delete": "Delete a tag, all refrences of the tag will be removed from items.",
+		"delete": "Delete a tag or item tags, if item id not provided all refrences of the tag will be removed from items.",
 	}
 
 	tagUse := map[string]string{
 		"view":   "tag view --all=true",
-		"delete": "tag delete -n <name>",
+		"delete": "tag delete -n <name> [-item-id <id> [-t <tags,to,remove> / -all (remove all tags for item)] ]",
 	}
 
 	fmt.Println("item : ...")
